@@ -1,6 +1,5 @@
 import cv2
 import pims
-import imageio
 import pandas as pd
 import os
 
