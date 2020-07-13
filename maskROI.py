@@ -31,3 +31,4 @@ def getMaskROIs(inputFolder, outputFolder):
 
     df = pd.DataFrame(data=[videos, rois], columns=["video", "maskROI"])
     df.to_csv(os.path.join(outputFolder, "maskROIs.csv"))
+    print("maskROIs.csv saved to:", outputFolder)
