@@ -1,4 +1,6 @@
-
+import cv2
+import pims
+import imageio
 
 def maskFrame_rect(frame, maskCoords = []):
     # utility function which masks (blackens) all pixels in the ROI as defined
@@ -12,9 +14,6 @@ def maskFrame_rect(frame, maskCoords = []):
 def maskVideo_rect(videoPath = [], outputFilename = [], maskCoords = [], fps = 30.0):
     # function containing a pipeline which masks a desired ROI in a given video
     # (defined by videoPath argument) and saves the result
-    import cv2
-    import pims
-    import imageio
 
     v = pims.Video(videoPath)
 
@@ -31,7 +30,7 @@ def maskVideo_rect(videoPath = [], outputFilename = [], maskCoords = [], fps = 3
     #if outputFilename == []:
     #    outputFilename = videoPath.rsplit('/', 1)[-1][:-4] + "_MASKED.mp4"
     #    outputFilename = videoPath[:-4] + "_MASKED.mp4"
-    outputFilename = "C:/Users/ndolensek/Downloads/" + videoPath.rsplit('/', 1)[-1][:-4] + "_MASKED.mp4" #CHANGE PATH!!!
+    outputFilename = "C:/Users/serce/Desktop" + videoPath.rsplit('/', 1)[-1][:-4] + "_MASKED.mp4" #CHANGE PATH!!!
     imageio.mimwrite(outputFilename, processed_video , fps = fps)
 
 #test
