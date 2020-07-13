@@ -66,4 +66,4 @@ def maskVideos_rect(folderPath, n_jobs = 4):
     """This function will process all videos in a given folder using the above described functions and the csv file
     containing rectangular ROIs (maskROIs.csv)"""
 
-    Parallel(n_jobs = n_jobs)(delayed(maskVideo_rect)(folderPath+filename) for filename in os.listdir(folderPath))
+    #Parallel(n_jobs = n_jobs)(delayed(maskVideo_rect)(folderPath+filename) for filename in os.listdir(folderPath))
