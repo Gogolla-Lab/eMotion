@@ -4,30 +4,24 @@ import imageio
 import pandas as pd
 import os
 
-def getMaskROIs(inputFolder, outputFolder):
+def getMaskROIs(folder):
     """Utility function to get masking ROIs of multiple videos. Grabs a frame from each video, asks for the ROI,
     saves the video paths and ROIs as a csv file for the downstream processes"""
 
     videos = []
     rois = []
 
-    for video in os.listdir(inputFolder):
+    for video in os.listdir(folder):
         if video.endswith('.mp4'):
-            vid = pims.Video(os.path.join(inputFolder, video))
+            vid = pims.Video(os.path.join(folder, video))
             roi = cv2.selectROI("Select ROI", vid[0])
             cv2.destroyWindow("Select ROI")
-            videos.append(os.path.join(inputFolder, video))
+            videos.append(os.path.join(folder, video))
             rois.append(roi)
 
     df = pd.DataFrame(data=rois, index=videos)
-
-    try:
-        os.mkdir(outputFolder)
-    except(OSError):
-        pass
-
-    df.to_csv(os.path.join(outputFolder, "maskROIs.csv"))
-    print("maskROIs.csv saved to:", outputFolder)
+    df.to_csv(os.path.join(folder, "maskROIs.csv"))
+    print("maskROIs.csv saved to:", os.path.join(folder, "maskROIs.csv"))
 
 def maskFrame_rect(frame, maskCoords=[]):
     """Utility function which masks (blackens) all pixels in the ROI as defined
