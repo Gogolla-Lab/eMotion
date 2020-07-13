@@ -31,3 +31,4 @@ def maskFrame_rect(frame, maskCoords=[]):
     frame[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])] = 0
 
     return frame
+
