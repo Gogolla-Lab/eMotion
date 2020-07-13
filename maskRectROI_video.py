@@ -1,10 +1,11 @@
 import cv2
 import pims
 import imageio
+import pandas as pd
 
 def maskFrame_rect(frame, maskCoords = []):
-    # utility function which masks (blackens) all pixels in the ROI as defined
-    # by maskCoords argument, expected to be output of cv2.selectROI  function.
+    """Utility function which masks (blackens) all pixels in the ROI as defined
+    by maskCoords argument, expected to be output of cv2.selectROI  function."""
     
     r = maskCoords
     frame[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])] = 0
@@ -12,8 +13,8 @@ def maskFrame_rect(frame, maskCoords = []):
     return frame
 
 def maskVideo_rect(videoPath = [], outputFilename = [], maskCoords = [], fps = 30.0):
-    # function containing a pipeline which masks a desired ROI in a given video
-    # (defined by videoPath argument) and saves the result
+    """Function containing a pipeline which masks a desired ROI in a given video
+    (defined by videoPath argument) and saves the result"""
 
     v = pims.Video(videoPath)
 
@@ -38,10 +39,6 @@ path1 = "J:/Onur Serce/Preprocessed videos/Day1/to_be_overlaid/ChR2_1_Day1.mp4"
 maskVideo_rect(path1)
 
 # see https://programmersought.com/article/3449903953/ for a polygon ROI/mask
-
-
-
-
 
 
 ### parallelized
