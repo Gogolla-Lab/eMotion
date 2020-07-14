@@ -13,7 +13,7 @@ n_jobs=${1?Error: no n_jobs given}
 
 scdir=/scratch/onur.serce/temp_process
 opdir=/scratch/onur.serce/temp_process/outputs
-mkdir $scdir
+mkdir -p $scdir
 cp ~/to_be_masked/* $scdir
 
 python maskROIs.py $scdir $opdir $n_jobs
