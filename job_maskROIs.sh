@@ -21,4 +21,5 @@ python maskROIs.py $scdir $outdir $n_jobs
 
 mkdir ~/to_be_masked/outputs
 cp outdir/* ~/to_be_masked/outputs
-rm -rf $scdir
+
+#rm -rf $scdir
