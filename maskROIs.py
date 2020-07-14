@@ -67,3 +67,8 @@ def maskVideos_rect(folderPath, outputFolder, n_jobs=4):
 
     Parallel(n_jobs=n_jobs)(delayed(maskVideo_rect)(os.path.join(folderPath, v), outputFolder)
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
+
+
+if __name__ == "__main__":
+    import sys
+    maskVideos_rect(sys.argv[1], sys.argv[2], int(sys.argv[3]))
