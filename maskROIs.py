@@ -18,7 +18,7 @@ def getMaskROIs(folder):
             vid = pims.Video(os.path.join(folder, video))
             roi = cv2.selectROI("Select ROI", vid[0])
             cv2.destroyWindow("Select ROI")
-            videos.append(os.path.join(folder, video))
+            videos.append(video)
             rois.append(roi)
 
     df = pd.DataFrame(data=rois, index=videos)
@@ -42,7 +42,7 @@ def maskVideo_rect(videoPath, outputFolder, fps=30.0):
 
     # get the maskCoords from the csv file
     df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "maskROIs.csv"), index_col=0)
-    maskCoords = tuple(df.loc[videoPath])
+    maskCoords = tuple(df.loc[os.path.split(videoPath)[-1]])
 
     # pipeline
     video = pims.Video(videoPath)
