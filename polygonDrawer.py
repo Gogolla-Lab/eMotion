@@ -69,7 +69,7 @@ class PolygonDrawer(object):
         # # Waiting for the user to press any key
         # cv2.waitKey()
         #
-        # cv2.destroyWindow(self.window_name)
+        cv2.destroyWindow(self.window_name)
         return self.getVertices()
 
 # ============================================================================

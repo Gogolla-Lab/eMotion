@@ -1,14 +1,19 @@
 import cv2
 import pims
 import imageio
+import numpy as np
 import pandas as pd
 import os
 from joblib import Parallel, delayed
+from polygonDrawer import PolygonDrawer
+from ast import literal_eval
 
 
-def getMaskROIs(folder):
+def getMaskROIs(folder, shape):
     """Utility function to get masking ROIs of multiple videos. Grabs a frame from each video, asks for the ROI,
-    saves the video paths and ROIs as a csv file for the downstream processes"""
+    saves the video paths and ROIs as a csv file for the downstream processes
+    shape: 'rectangular' or 'polygon'
+    """
 
     videos = []
     rois = []
@@ -16,10 +21,19 @@ def getMaskROIs(folder):
     for video in os.listdir(folder):
         if video.endswith('.mp4'):
             vid = pims.Video(os.path.join(folder, video))
-            roi = cv2.selectROI("Select ROI", vid[0])
-            cv2.destroyWindow("Select ROI")
-            videos.append(video)
-            rois.append(roi)
+
+            if shape == "rectangular":
+                roi = cv2.selectROI("Select ROI", vid[0])
+                cv2.destroyWindow("Select ROI")
+                videos.append(video)
+                rois.append(roi)
+
+            if shape == "polygon":
+                pgd = PolygonDrawer("PolygonDrawer", img=vid[0])
+                # cv2.destroyWindow("PolygonDrawer")
+                roi = pgd.run()
+                videos.append(video)
+                rois.append(roi)
 
     df = pd.DataFrame(data=rois, index=videos)
     df.to_csv(os.path.join(folder, "maskROIs.csv"))
@@ -32,6 +46,13 @@ def maskFrame_rect(frame, maskCoords=[]):
 
     r = maskCoords
     frame[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])] = 0
+
+    return frame
+
+
+def maskFrame_poly(frame, vertices):
+
+    cv2.fillPoly(frame, [vertices], 0)
 
     return frame
 
@@ -61,6 +82,30 @@ def maskVideo_rect(videoPath, outputFolder, fps=30.0):
     imageio.mimwrite(outputFilename, processed_video, fps=fps)
 
 
+def maskVideo_poly(videoPath, outputFolder, fps=30.0):
+    """Function containing a pipeline which masks a desired polygon in a given video (provided by the maskROIs.csv file)
+    and saves the result"""
+
+    # get the vertices from the csv file
+    df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "maskROIs.csv"), index_col=0)
+    vertices = np.array([list(literal_eval(r)) for r in df.loc[os.path.split(videoPath)[-1]].dropna()])
+
+    # pipeline
+    video = pims.Video(videoPath)
+    masking_pipeline = pims.pipeline(maskFrame_poly)
+    kwargs = dict(vertices=vertices)
+    processed_video = masking_pipeline(video, **kwargs)
+
+    # writing to disk
+    try:
+        os.mkdir(outputFolder)
+    except OSError:
+        print(outputFolder, "already exists! Continuing with the process without creating it.")
+
+    outputFilename = os.path.join(outputFolder, os.path.split(videoPath)[-1].strip(".mp4") + "_masked.mp4")
+    imageio.mimwrite(outputFilename, processed_video, fps=fps)
+
+
 def maskVideos_rect(folderPath, outputFolder, n_jobs=4):
     """This function will process all videos in a given folder using the above described functions and the csv file
     containing rectangular ROIs (maskROIs.csv)"""
@@ -69,6 +114,14 @@ def maskVideos_rect(folderPath, outputFolder, n_jobs=4):
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 
-if __name__ == "__main__":
-    import sys
-    maskVideos_rect(sys.argv[1], sys.argv[2], int(sys.argv[3]))
+def maskVideos_poly(folderPath, outputFolder, n_jobs=4):
+    """This function will process all videos in a given folder using the above described functions and the csv file
+    containing rectangular ROIs (maskROIs.csv)"""
+
+    Parallel(n_jobs=n_jobs)(delayed(maskVideo_poly)(os.path.join(folderPath, v), outputFolder)
+                            for v in os.listdir(folderPath) if v.endswith(".mp4"))
+
+
+# if __name__ == "__main__":
+#     import sys
+#     maskVideos_rect(sys.argv[1], sys.argv[2], int(sys.argv[3]))
