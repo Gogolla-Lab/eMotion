@@ -122,6 +122,20 @@ def maskVideos_poly(folderPath, outputFolder, n_jobs=4):
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 
+def maskImages_poly(folder, csv):
+    """Function for masking labeled images (of a particular video folder e.g Hr1_Day3). Uses the given csv file
+    to look up video name and and polygon vertices"""
+
+    df = pd.read_csv(csv, index_col=0)
+    vertices = np.array([list(literal_eval(r)) for r in df.loc[os.path.split(folder)[-1]+'.mp4'].dropna()])
+
+    for file in os.listdir(folder):
+        if file.endswith(".png"):
+            img = imageio.imread(os.path.join(folder, file))
+            img = maskFrame_poly(img, vertices)
+            imageio.imwrite(os.path.join(folder, file), img, format='.png')
+
+
 # if __name__ == "__main__":
 #     import sys
 #     maskVideos_rect(sys.argv[1], sys.argv[2], int(sys.argv[3]))
