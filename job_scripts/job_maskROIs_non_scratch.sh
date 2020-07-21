@@ -9,8 +9,8 @@
 module purge
 source activate behaviour-switching
 
-wd = $HOME/to_be_masked
-outdir = $HOME/to_be_masked/outputs
+wd=$HOME/to_be_masked
+outdir=$HOME/to_be_masked/outputs
 mkdir -p $outdir
 
 n_jobs=${1?Error: no n_jobs given}
