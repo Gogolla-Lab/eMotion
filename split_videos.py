@@ -3,6 +3,7 @@ import pims
 import pandas as pd
 import imageio
 import cv2
+from joblib import Parallel, delayed
 
 def get_split_ROIs(folder):
     """Utility function to get ROIs from multiple videos. Grabs a frame from each video, asks for the ROI,
@@ -40,9 +41,9 @@ def split_video(video_path, outputFolder):
     vid_name = os.path.split(video_path)[-1]
 
     # get coords
-    df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "splitROIs.csv"), index_col=[0,1])
-    coord_L = tuple(df.loc[os.path.split(videoPath)[-1], "L"])
-    coord_R = tuple(df.loc[os.path.split(videoPath)[-1], "R"])
+    df = pd.read_csv(os.path.join(os.path.split(video_path)[0], "splitROIs.csv"), index_col=[0,1])
+    coord_L = tuple(df.loc[os.path.split(video_path)[-1], "L"])
+    coord_R = tuple(df.loc[os.path.split(video_path)[-1], "R"])
 
     try:
         os.mkdir(outputFolder)
@@ -68,3 +69,12 @@ def split_video(video_path, outputFolder):
             for im in reader:
                 writer.append_data(im[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])])
             writer.close()
+
+
+def splitVideos(folderPath, outputFolder, n_jobs=4):
+    """This function will process all videos in a given folder using the above described functions and the csv file
+    containing rectangular ROIs (maskROIs.csv)"""
+
+    Parallel(n_jobs=n_jobs)(delayed(split_video)(os.path.join(folderPath, v), outputFolder)
+                            for v in os.listdir(folderPath) if v.endswith(".mp4"))
+
