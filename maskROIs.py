@@ -10,9 +10,9 @@ from ast import literal_eval
 
 
 def getMaskROIs(folder, shape):
-    """Utility function to get masking ROIs of multiple videos. Grabs a frame from each video, asks for the ROI,
+    """Utility function to get ROIs from multiple videos. Grabs a frame from each video, asks for the ROI,
     saves the video paths and ROIs as a csv file for the downstream processes
-    shape: 'rectangular' or 'polygon'
+    :shape: 'rectangular' or 'polygon'
     """
 
     videos = []
