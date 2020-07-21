@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH -p medium
-#SBATCH -t 0:30:00
+#SBATCH -t 1:59:59
 #SBATCH -c 16
+#SBATCH -C scratch
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_maskROIs.sh_%J.out
