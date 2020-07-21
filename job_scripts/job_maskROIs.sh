@@ -16,11 +16,11 @@ scdir=/scratch/onur.serce/temp_process
 outdir=/scratch/onur.serce/temp_process/outputs
 
 mkdir -p $outdir
-cp ~/to_be_masked/* $scdir
+cp $HOME/to_be_masked/* $scdir
 
 python behaviour-switching/maskROIs.py $scdir $outdir $n_jobs
 
-mkdir ~/to_be_masked/outputs
-cp outdir/* ~/to_be_masked/outputs
+mkdir $HOME/to_be_masked/outputs
+cp outdir/* $HOME/to_be_masked/outputs
 
 #rm -rf $scdir
