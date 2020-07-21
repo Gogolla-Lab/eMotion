@@ -151,6 +151,6 @@ def maskImages_poly(folder, csv):
             imageio.imwrite(os.path.join(folder, file), img, format='.png')
 
 
-# if __name__ == "__main__":
-#     import sys
-#     maskVideos_rect(sys.argv[1], sys.argv[2], int(sys.argv[3]))
+if __name__ == "__main__":
+    import sys
+    maskVideos_poly(sys.argv[1], sys.argv[2], int(sys.argv[3]))
