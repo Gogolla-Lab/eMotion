@@ -4,7 +4,7 @@
 #SBATCH -G gtx1080:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o output_dlc_evaluate_network_%J.out
+#SBATCH -o dlc_job_evaluate_network_%J.out
 
 
 module purge
@@ -19,6 +19,6 @@ gputouse=$CUDA_VISIBLE_DEVICES
 echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python dlc_evaluate_network.py $shuffles $gputouse
+python behaviour-switching/dlc_evaluate_network.py $shuffles $gputouse
 
 echo "dlc_evaluate_network.py $shuffles $gputouse completed!"

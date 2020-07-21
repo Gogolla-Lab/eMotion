@@ -82,7 +82,7 @@ def maskVideo_rect(videoPath, outputFolder, fps=30.0):
     imageio.mimwrite(outputFilename, processed_video, fps=fps)
 
 
-def maskVideo_poly(videoPath, outputFolder, fps=30.0):
+def maskVideo_poly(videoPath, outputFolder, reader='ImageIO', fps=30.0):
     """Function containing a pipeline which masks a desired polygon in a given video (provided by the maskROIs.csv file)
     and saves the result"""
 
@@ -90,8 +90,13 @@ def maskVideo_poly(videoPath, outputFolder, fps=30.0):
     df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "maskROIs.csv"), index_col=0)
     vertices = np.array([list(literal_eval(r)) for r in df.loc[os.path.split(videoPath)[-1]].dropna()])
 
+    # reader
+    if reader == 'ImageIO':
+        video = pims.ImageIOReader(videoPath)
+    elif reader == 'PyAV':
+        video = pims.Video(videoPath)
+
     # pipeline
-    video = pims.Video(videoPath)
     masking_pipeline = pims.pipeline(maskFrame_poly)
     kwargs = dict(vertices=vertices)
     processed_video = masking_pipeline(video, **kwargs)

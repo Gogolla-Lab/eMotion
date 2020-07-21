@@ -18,6 +18,6 @@ snapshotindex=${2?Error: no snapshotindex given}
 
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python dlc_plot_trajectories.py $shuffleindex $snapshotindex
+python behaviour-switching/dlc_plot_trajectories.py $shuffleindex $snapshotindex
 
 echo "dlc_plot_trajectories.py $shuffleindex $snapshotindex is completed!"

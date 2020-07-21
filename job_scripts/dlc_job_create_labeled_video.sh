@@ -22,6 +22,6 @@ gputouse=$CUDA_VISIBLE_DEVICES
 
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python dlc_create_labeled_video.py $shuffleindex $snapshotindex $listindex1 $listindex2
+python behaviour-switching/dlc_create_labeled_video.py $shuffleindex $snapshotindex $listindex1 $listindex2
 
 echo "dlc_create_labeled_video.py $shuffleindex $snapshotindex $listindex1 $listindex2 is completed!"

@@ -4,7 +4,7 @@
 #SBATCH -G gtx1080:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o dlc_analyze_videos_%J.out
+#SBATCH -o dlc_job_analyze_videos_%J.out
 
 
 module purge
@@ -20,6 +20,6 @@ gputouse=$CUDA_VISIBLE_DEVICES
 
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python dlc_analyze_videos.py $shuffleindex $snapshotindex $gputouse
+python behaviour-switching/dlc_analyze_videos.py $shuffleindex $snapshotindex $gputouse
 
 echo "dlc_analyze_videos.py $shuffleindex $snapshotindex is completed!"
