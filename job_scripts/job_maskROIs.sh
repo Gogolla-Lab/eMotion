@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p medium
-#SBATCH -t 1:59:59
+#SBATCH -t 5:00:00
 #SBATCH -c 16
 #SBATCH -C scratch
 #SBATCH --mail-type=END
