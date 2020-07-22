@@ -78,3 +78,6 @@ def splitVideos(folderPath, outputFolder, n_jobs=4):
     Parallel(n_jobs=n_jobs)(delayed(split_video)(os.path.join(folderPath, v), outputFolder)
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
+if __name__ == "__main__":
+    import sys
+    splitVideos(sys.argv[1], sys.argv[2], int(sys.argv[3]))
