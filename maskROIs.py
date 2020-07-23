@@ -9,7 +9,7 @@ from polygonDrawer import PolygonDrawer
 from ast import literal_eval
 
 
-def getMaskROIs(folder, shape):
+def getMaskROIs(folder, shape, frame_no=0, save=True):
     """Utility function to get ROIs from multiple videos. Grabs a frame from each video, asks for the ROI,
     saves the video paths and ROIs as a csv file for the downstream processes
     :shape: 'rectangular' or 'polygon'
@@ -23,22 +23,23 @@ def getMaskROIs(folder, shape):
             vid = pims.Video(os.path.join(folder, video))
 
             if shape == "rectangular":
-                roi = cv2.selectROI("Select ROI", vid[0])
+                roi = cv2.selectROI("Select ROI", vid[frame_no])
                 cv2.destroyWindow("Select ROI")
                 videos.append(video)
                 rois.append(roi)
 
             if shape == "polygon":
-                pgd = PolygonDrawer("PolygonDrawer", img=vid[0])
+                pgd = PolygonDrawer("PolygonDrawer", img=vid[frame_no])
                 # cv2.destroyWindow("PolygonDrawer")
                 roi = pgd.run()
                 videos.append(video)
                 rois.append(roi)
-
-    df = pd.DataFrame(data=rois, index=videos)
-    df.to_csv(os.path.join(folder, "maskROIs.csv"))
-    print("maskROIs.csv saved to:", os.path.join(folder, "maskROIs.csv"))
-
+    if save:
+        df = pd.DataFrame(data=rois, index=videos)
+        df.to_csv(os.path.join(folder, "maskROIs.csv"))
+        print("maskROIs.csv saved to:", os.path.join(folder, "maskROIs.csv"))
+    else:
+        return videos, rois
 
 def maskFrame_rect(frame, maskCoords=[]):
     """Utility function which masks (blackens) all pixels in the ROI as defined
@@ -137,6 +138,7 @@ def maskVideos_poly(folderPath, outputFolder, n_jobs=4):
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 
+# extra function for post-hoc masking labeled images
 def maskImages_poly(folder, csv):
     """Function for masking labeled images (of a particular video folder e.g Hr1_Day3). Uses the given csv file
     to look up video name and and polygon vertices"""
