@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import os
 from joblib import Parallel, delayed
-from polygonDrawer import PolygonDrawer
+from drawer import PolygonDrawer
 from ast import literal_eval
 
 

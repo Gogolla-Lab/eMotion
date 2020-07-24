@@ -4,13 +4,13 @@ import numpy as np
 import pandas as pd
 import imageio
 import pims
-from polygonDrawer import PolygonDrawer
+from drawer import PolygonDrawer
 from maskROIs import maskFrame_poly
 from ast import literal_eval
 from joblib import Parallel, delayed
 
 def create_df(folder):
-
+    # TODO: MODIFY THE FUNCTION TO USE THE PYAV (MAYBE OPTIONAL)
     videos = []
     fps = []
     start = []
@@ -31,7 +31,8 @@ def create_df(folder):
 
 
 def append_mask_and_crop_ROIs(folder):
-
+    # TODO: SPLIT THE FUNCTION INTO TWO PARTS; GET VERTICES AND CROPS SEPARATELY; SAVE THE DF AFTER EACH CROP OR MASK;
+    #  USE PYAV TO SAVE THE FRAMES TO DISK
     df = pd.read_csv(os.path.join(folder, 'trims.csv'), index_col=0)
     rois = []
     crops = []
