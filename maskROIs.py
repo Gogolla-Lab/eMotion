@@ -8,7 +8,7 @@ from joblib import Parallel, delayed
 from drawer import PolygonDrawer
 from ast import literal_eval
 
-
+# ToDo: Update getMaskROIs to be compatible with shape 'circle'
 def getMaskROIs(folder, shape, frame_no=0, save=True):
     """Utility function to get ROIs from multiple videos. Grabs a frame from each video, asks for the ROI,
     saves the video paths and ROIs as a csv file for the downstream processes
@@ -41,6 +41,7 @@ def getMaskROIs(folder, shape, frame_no=0, save=True):
     else:
         return videos, rois
 
+
 def maskFrame_rect(frame, maskCoords=[]):
     """Utility function which masks (blackens) all pixels in the ROI as defined
     by maskCoords argument, expected to be output of cv2.selectROI  function."""
@@ -52,10 +53,17 @@ def maskFrame_rect(frame, maskCoords=[]):
 
 
 def maskFrame_poly(frame, vertices):
-
     cv2.fillPoly(frame, [vertices], 0)
 
     return frame
+
+
+def maskFrame_circle(frame, coords):
+    canvas = np.zeros(frame.shape, dtype=frame.dtype)
+    cv2.circle(canvas, center=circle[0], radius=coords[1], color=(255, 255, 255), thickness=-1)
+    result = cv2.add(frame, canvas)
+
+    return result
 
 
 def maskVideo_rect(videoPath, outputFolder, reader='ImageIO'):
@@ -144,7 +152,7 @@ def maskImages_poly(folder, csv):
     to look up video name and and polygon vertices"""
 
     df = pd.read_csv(csv, index_col=0)
-    vertices = np.array([list(literal_eval(r)) for r in df.loc[os.path.split(folder)[-1]+'.mp4'].dropna()])
+    vertices = np.array([list(literal_eval(r)) for r in df.loc[os.path.split(folder)[-1] + '.mp4'].dropna()])
 
     for file in os.listdir(folder):
         if file.endswith(".png"):
@@ -152,7 +160,6 @@ def maskImages_poly(folder, csv):
             img = maskFrame_poly(img, vertices)
             imageio.imwrite(os.path.join(folder, file), img, format='.png')
 
-
-if __name__ == "__main__":
-    import sys
-    maskVideos_poly(sys.argv[1], sys.argv[2], int(sys.argv[3]))
+# if __name__ == "__main__":
+#     import sys
+#     maskVideos_poly(sys.argv[1], sys.argv[2], int(sys.argv[3]))
