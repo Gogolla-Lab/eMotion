@@ -4,13 +4,13 @@ import numpy as np
 import pandas as pd
 import imageio
 import pims
-from drawer import PolygonDrawer
+from drawer import CircleDrawer
 from maskROIs import maskFrame_poly
 from ast import literal_eval
 from joblib import Parallel, delayed
 
-def create_df(folder):
-    # TODO: MODIFY THE FUNCTION TO USE THE PYAV (MAYBE OPTIONAL)
+def create_trims_df(folder):
+
     videos = []
     fps = []
     start = []
@@ -19,37 +19,50 @@ def create_df(folder):
     for video in os.listdir(folder):
         if video.endswith('.mp4') or video.endswith('.MP4'):
             print('Working on video: ', video)
-            vid = pims.ImageIOReader(os.path.join(folder, video))
+            vid = pims.Video(os.path.join(folder, video))
             videos.append(video)
-            fps.append(vid.frame_rate)
+            fps.append(round(vid.frame_rate, 3))
             start.append(0.0)
-            end.append(float(int(vid.sizes['t'] / vid.frame_rate)))
+            end.append(vid.duration)
 
     df = pd.DataFrame(data=np.array([fps, start, end]).T, index=videos, columns=['fps', 'start', 'end'])
     df.to_csv(os.path.join(folder, 'trims.csv'))
     print(os.path.join(folder, 'trims.csv'), "created!")
 
 
-def append_mask_and_crop_ROIs(folder):
-    # TODO: SPLIT THE FUNCTION INTO TWO PARTS; GET VERTICES AND CROPS SEPARATELY; SAVE THE DF AFTER EACH CROP OR MASK;
-    #  USE PYAV TO SAVE THE FRAMES TO DISK
-    df = pd.read_csv(os.path.join(folder, 'trims.csv'), index_col=0)
-    rois = []
-    crops = []
+def append_mask_and_crop_ROIs(folder, shape = 'circle'):
 
-    for video in os.listdir(folder):
-        if video.endswith('.mp4'):
-            vid = pims.ImageIOReader(os.path.join(folder, video))
-            pgd = PolygonDrawer("Select the region to be MASKED", img=vid[df.loc[video, 'start']*df.loc[video, 'fps']])
-            # cv2.destroyWindow("PolygonDrawer")
+    # Check if 'process.csv' exist to continue from where the user left the process
+    if os.path.exists(os.path.join(folder, 'process.csv')):
+        df = pd.read_csv(os.path.join(folder, 'process.csv'), index_col=0)
+    else:
+        df = pd.read_csv(os.path.join(folder, 'trims.csv'), index_col=0)
 
-            df.loc[video, 'vertices'] = str(pgd.run())
+    for video in df.index:
+        vid = pims.Video(os.path.join(folder, video))
+
+        # add the masking roi if it doesn't exist in the df
+        if shape not in df.columns:
+            df[shape] = np.NaN
+            df.to_csv(os.path.join(folder, 'process.csv'))
+        if pd.isnull(df.loc[video, shape]):
+            if shape == 'circle':
+                cd = CircleDrawer('Draw a circle, right click when done.',
+                                 img=vid[df.loc[video, 'start']*df.loc[video, 'fps']])
+                df.loc[video, shape] = str(cd.run())
+            df.to_csv(os.path.join(folder, 'process.csv'))
+
+        # add the crop roi if it doesn't exist in the df
+        if 'crop' not in df.columns:
+            df['crop'] = np.NaN
+            df.to_csv(os.path.join(folder, 'process.csv'))
+        if df.loc[video, 'crop'] == '(0, 0, 0, 0)' or pd.isnull(df.loc[video, 'crop']):
             df.loc[video, 'crop'] = str(cv2.selectROI('Select the region to be CROPPED',
-                                                   vid[df.loc[video, 'start']*df.loc[video, 'fps']]))
+                                                      vid[df.loc[video, 'start']*df.loc[video, 'fps']]))
             cv2.destroyWindow('Select the region to be CROPPED')
+            df.to_csv(os.path.join(folder, 'process.csv'))
 
-    df.to_csv(os.path.join(folder, 'process.csv'))
-    print(os.path.join(folder, 'process.csv'), "created!")
+    print(os.path.join(folder, 'process.csv'), "created with all required entries!")
 
 
 def processVideo(videoPath, outputFolder):
