@@ -83,9 +83,9 @@ class PolygonDrawer(object):
 class CircleDrawer(PolygonDrawer):
 
     def getCircle(self):
-        arc = self.points[0]
+        center = self.points[1]
         radius = isqrt((self.points[0][0] - self.points[1][0]) ** 2 + (self.points[0][1] - self.points[1][1]) ** 2)
-        return arc, radius
+        return center, radius
 
     def run(self, fill=True):
         # Let's create our working window and set a mouse callback to handle events
