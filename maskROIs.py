@@ -58,10 +58,10 @@ def maskFrame_poly(frame, vertices):
     return frame
 
 
-def maskFrame_circle(frame, coords):
+def maskFrame_circle(frame, circle):
     canvas = np.zeros(frame.shape, dtype=frame.dtype)
-    cv2.circle(canvas, center=circle[0], radius=coords[1], color=(255, 255, 255), thickness=-1)
-    result = cv2.add(frame, canvas)
+    cv2.circle(canvas, center=circle[0], radius=circle[1], color=(255, 255, 255), thickness=-1)
+    result = cv2.subtract(frame, canvas)
 
     return result
 
@@ -83,7 +83,6 @@ def maskVideo_rect(videoPath, outputFolder, reader='ImageIO'):
     fps = video.frame_rate
 
     # pipeline
-    video = pims.Video(videoPath)
     r = maskCoords
     masking_pipeline = pims.pipeline(maskFrame_rect)
     kwargs = dict(maskCoords=r)
