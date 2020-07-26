@@ -18,7 +18,6 @@ def crop_frame(frame, crop):
 
 
 def create_trims_df(folder):
-
     videos = []
     fps = []
     start = []
@@ -39,7 +38,6 @@ def create_trims_df(folder):
 
 
 def append_mask_and_crop_ROIs(folder, shape='circle'):
-
     # Check if 'process.csv' exist to continue from where the user left the process
     if os.path.exists(os.path.join(folder, 'process.csv')):
         df = pd.read_csv(os.path.join(folder, 'process.csv'), index_col=0)
@@ -56,7 +54,7 @@ def append_mask_and_crop_ROIs(folder, shape='circle'):
         if pd.isnull(df.loc[video, shape]):
             if shape == 'circle':
                 cd = CircleDrawer('Draw a circle, right click when done.',
-                                 img=vid[df.loc[video, 'start']*df.loc[video, 'fps']])
+                                  img=vid[df.loc[video, 'start'] * df.loc[video, 'fps']])
                 df.loc[video, shape] = str(cd.run())
             df.to_csv(os.path.join(folder, 'process.csv'))
 
@@ -66,7 +64,7 @@ def append_mask_and_crop_ROIs(folder, shape='circle'):
             df.to_csv(os.path.join(folder, 'process.csv'))
         if df.loc[video, 'crop'] == '(0, 0, 0, 0)' or pd.isnull(df.loc[video, 'crop']):
             df.loc[video, 'crop'] = str(cv2.selectROI('Select the region to be CROPPED',
-                                                      vid[df.loc[video, 'start']*df.loc[video, 'fps']]))
+                                                      vid[df.loc[video, 'start'] * df.loc[video, 'fps']]))
             cv2.destroyWindow('Select the region to be CROPPED')
             df.to_csv(os.path.join(folder, 'process.csv'))
 
@@ -83,10 +81,9 @@ def processVideo(videoPath, outputFolder, shape='circle'):
     end = df.loc[os.path.split(videoPath)[-1], 'end']
     if shape == 'circle':
         circle = literal_eval(df.loc[os.path.split(videoPath)[-1], 'circle'])
-    elif shape == 'polygon':
-        vertices = np.array(literal_eval(df.loc[os.path.split(videoPath)[-1], 'vertices']))
+    # elif shape == 'polygon':
+    #     vertices = np.array(literal_eval(df.loc[os.path.split(videoPath)[-1], 'vertices']))
     crop = literal_eval(df.loc[os.path.split(videoPath)[-1], 'crop'])
-    r = crop
 
     video = pims.ImageIOReader(videoPath)
     fps = video.frame_rate
@@ -123,8 +120,8 @@ def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
 
 if __name__ == "__main__":
     import sys
-    processVideos(sys.argv[1], sys.argv[2], int(sys.argv[3]))
 
+    processVideos(sys.argv[1], sys.argv[2], n_jobs=int(sys.argv[3]))
 
 # # test
 # folder = "C:/Users/serce/Desktop/temp"
@@ -132,4 +129,3 @@ if __name__ == "__main__":
 # create_trims_df(folder)
 # append_mask_and_crop_ROIs(folder)
 # processVideos(folder, outputFolder, n_jobs=3)
-
