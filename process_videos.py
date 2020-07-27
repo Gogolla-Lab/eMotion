@@ -75,6 +75,7 @@ def processVideo(videoPath, outputFolder, shape='circle'):
     """Pipeline containing function to trim, mask and crop a video (provided by the process.csv file)
     :shape: 'circle' or 'polygon' """
 
+    print('processVideo called with: ', videoPath, outputFolder)
     # get the required data from the process.csv file
     df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "process.csv"), index_col=0)
     start = df.loc[os.path.split(videoPath)[-1], 'start']
@@ -108,6 +109,7 @@ def processVideo(videoPath, outputFolder, shape='circle'):
     start_frame = int(start * fps)
     end_frame = int(end * fps)
     imageio.mimwrite(outputFilename, cropped_video[start_frame:end_frame], fps=fps)
+    print('Completed: processVideo with parameters: ', videoPath, outputFolder)
 
 
 def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
@@ -120,7 +122,7 @@ def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
 
 if __name__ == "__main__":
     import sys
-
+    print("Initiating processVideos.py with args: ", sys.argv)
     processVideos(sys.argv[1], sys.argv[2], n_jobs=int(sys.argv[3]))
 
 # # test
