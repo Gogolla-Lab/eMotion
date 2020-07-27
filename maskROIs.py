@@ -8,7 +8,7 @@ from joblib import Parallel, delayed
 from drawer import PolygonDrawer
 from ast import literal_eval
 
-# ToDo: Update getMaskROIs to be compatible with shape 'circle'
+
 def getMaskROIs(folder, shape, frame_no=0, save=True):
     """Utility function to get ROIs from multiple videos. Grabs a frame from each video, asks for the ROI,
     saves the video paths and ROIs as a csv file for the downstream processes
@@ -42,7 +42,7 @@ def getMaskROIs(folder, shape, frame_no=0, save=True):
         return videos, rois
 
 
-def maskFrame_rect(frame, maskCoords=[]):
+def maskFrame_rect(frame, maskCoords):
     """Utility function which masks (blackens) all pixels in the ROI as defined
     by maskCoords argument, expected to be output of cv2.selectROI  function."""
 
