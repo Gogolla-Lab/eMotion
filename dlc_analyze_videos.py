@@ -7,9 +7,8 @@ snapshotindex = int(sys.argv[2])
 gputouse = int(sys.argv[3])
 
 import deeplabcut as dlc
-
 config_path = "/usr/users/onur.serce/dlc_real-alja_onur-2020-04-06/config.yaml"
-videos_path = "/usr/users/onur.serce/dlc_real-alja_onur-2020-04-06/videos/"
+videos_path = "/scratch/onur.serce/"
 
 videos_path_list = []
 for video in os.listdir(videos_path):
@@ -35,7 +34,7 @@ dlc.auxiliaryfunctions.edit_config(config_path, edits)
 
 print('\nediting the config file... ')
 for item in edits.items():
-    print(item)
+	print(item)
 
 print('edit completed!')
 
