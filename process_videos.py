@@ -72,8 +72,10 @@ def append_mask_and_crop_ROIs(folder, shape='circle'):
 
 
 def processVideo(videoPath, outputFolder, shape='circle'):
-    """Pipeline containing function to trim, mask and crop a video (provided by the process.csv file)
-    :shape: 'circle' or 'polygon' """
+    """
+    Pipeline containing function to trim, mask and crop a video (provided by the process.csv file)
+    shape: 'circle' or 'polygon'
+    """
 
     print('processVideo called with: ', videoPath, outputFolder)
     # get the required data from the process.csv file
@@ -122,7 +124,7 @@ def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
 
 if __name__ == "__main__":
     import sys
-    print("Initiating processVideos.py with args: ", sys.argv)
+    print("Initiating processVideos with args: ", sys.argv)
     processVideos(sys.argv[1], sys.argv[2], n_jobs=int(sys.argv[3]))
 
 # # test
