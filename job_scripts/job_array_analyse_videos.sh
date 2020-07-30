@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -a 0-81:5
 #SBATCH -p gpu
-#SBATCH -t 20:00:00
+#SBATCH -t 23:00:00
 #SBATCH -G gtx1080:1
 #Sbatch -c 2
 #SBATCH --mail-type=END
