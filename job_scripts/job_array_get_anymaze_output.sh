@@ -10,7 +10,7 @@
 module purge
 source activate behaviour-switching
 
-folder=/scratch/onur.serce/
+folder=${1?Error: Please provide the path to the folder containing analysis.csv and DLC outputs.}
 
 python behaviour-switching/roi_analysis.py $folder $SLURM_ARRAY_TASK_ID
 
