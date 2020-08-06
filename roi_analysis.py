@@ -7,17 +7,20 @@ from ast import literal_eval
 from drawer import CircleDrawer, PolygonDrawer
 from shapely.geometry import Point
 from shapely.geometry import box
-from shapely.geometry import Polygon
+# from shapely.geometry import Polygon
 from joblib import Parallel, delayed
 
 
 def collect_ROIs(folder):
-    df_index = [csv for csv in os.listdir(folder) if (csv.endswith(".csv") and not csv.startswith('analysis'))]
+    df_index = [csv for csv in os.listdir(folder) if
+                (csv.endswith(".csv") and not csv.startswith('analysis'))]
     df = pd.DataFrame(index=df_index)
 
     how_many_rois = int(input("Enter how many ROIs you want to add (an integer number) and press enter: \n"))
     for i in range(how_many_rois):
-        roitype = str(input("ROI nr. {}, please enter the roi type ('circle', 'rectangle' or 'polygon')".format(i + 1)))
+        roitype = \
+            str(input(
+                "ROI nr. {}, please enter the roi type ('circle', 'rectangle' or 'polygon')".format(i + 1)))
         df[str(i) + ':' + roitype] = np.NaN
 
     df.to_csv(os.path.join(folder, 'analysis_rois.csv'))
@@ -29,9 +32,9 @@ def draw_ROIs(folder):
 
     for i in df.index:
         for col in df.columns:
-            videoname = i[:i.find('DLC')]+'.mp4'
+            videoname = i[:i.find('DLC')] + '.mp4'
             roitype = col[2:]
-            roinr = int(col[:1])
+            # roinr = int(col[:1])
             if pd.isnull(df.loc[i, col]):
                 video = pims.Video(os.path.join(folder, videoname))
                 if roitype == 'rectangle':
@@ -70,7 +73,7 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
 
     # Process each DataFrame
     dlc_df = pd.read_csv(csv_path, header=[1, 2])
-    dlc_df = dlc_df[bodypart]   # Taking only one bodypart
+    dlc_df = dlc_df[bodypart]  # Taking only one bodypart
     for frame in dlc_df.index:
         mouse_center = Point(dlc_df.loc[frame, 'x'], dlc_df.loc[frame, 'y'])
         dlc_df.loc[frame, 'social'] = mouse_center.intersects(social)
@@ -81,6 +84,17 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
     dlc_df.to_csv(os.path.join(folder, csv[:-4] + '_ROIs.csv'))  # [:-4] is to remove '.csv' from the filename
 
 
-def get_anymaze_outputs(folder, n_jobs=8):
+def get_anymaze_outputs(folder, n_jobs=16):
     Parallel(n_jobs=n_jobs)(delayed(dlc_to_anymaze_output)(os.path.join(folder, csv))
                             for csv in os.listdir(folder) if (csv.endswith('.csv') and not csv.startswith('analysis')))
+
+
+if __name__ == "__main__":
+    import sys
+
+    folder = sys.argv[1]
+    array_task_id = int(sys.argv[2])
+    csv_paths = [os.path.join(folder, c) for c in os.listdir(folder) if
+                 (c.endswith('.csv') and not c.startswith('analysis'))]
+    csv_path = csv_paths[array_task_id]
+    dlc_to_anymaze_output(csv_path=csv_path, bodypart='center')
