@@ -6,7 +6,7 @@
 #Sbatch -c 2
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o job_array_analyse_videos_%J_%a.out
+#SBATCH -o job_array_analyse_videos_%A_%a.out
 
 module purge
 module load cuda10.0/toolkit/10.0.130

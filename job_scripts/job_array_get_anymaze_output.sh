@@ -5,7 +5,7 @@
 #SBATCH -t 1:00:00
 #SBATCH -c 1
 #SBATCH -C scratch
-#SBATCH -o job_array_get_anymaze_output.sh_%J_%a.out
+#SBATCH -o job_array_get_anymaze_output_%A_%a.out
 
 module purge
 source activate behaviour-switching
