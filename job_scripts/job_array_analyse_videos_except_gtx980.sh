@@ -3,7 +3,8 @@
 #SBATCH -p gpu
 #SBATCH -t 36:00:00
 #SBATCH -x dge[008-015]
-#Sbatch -c 2
+#SBATCH -G 1
+#SBATCH -c 2
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_array_analyse_videos_except_gtx980_%A_%a.out
