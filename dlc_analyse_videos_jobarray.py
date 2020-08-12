@@ -33,7 +33,7 @@ for item in edits.items():
 print('edit completed!')
 
 
-dlc.analyze_videos(config=config_path, videos=videos[index:index+5], videotype='.mp4', shuffle=shuffleindex, trainingsetindex=0, gputouse=gputouse, save_as_csv=True, TFGPUinference=True)
+dlc.analyze_videos(config=config_path, videos=videos[index:index+3], videotype='.mp4', shuffle=shuffleindex, trainingsetindex=0, gputouse=gputouse, save_as_csv=True, TFGPUinference=True)
 # dlc.analyze_videos(config=config_path, videos=[videos_path+'Control_8_Day_1_cropped.mp4'], videotype='.mp4', shuffle=shuffleindex, trainingsetindex=0, gputouse=gputouse, save_as_csv=True, TFGPUinference=True)
 
 
