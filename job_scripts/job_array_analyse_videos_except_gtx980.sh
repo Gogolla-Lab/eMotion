@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -a 0-11:3
 #SBATCH -p gpu
-#SBATCH -t 23:00:00
+#SBATCH -t 36:00:00
 #SBATCH -x dge[008-015]
 #Sbatch -c 2
 #SBATCH --mail-type=END
