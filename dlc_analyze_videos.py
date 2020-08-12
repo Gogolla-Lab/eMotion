@@ -13,7 +13,7 @@ videos_path = "/scratch/onur.serce/"
 videos_path_list = []
 for video in os.listdir(videos_path):
 	if video.endswith(".mp4") or video.endswith(".MP4"):
-		videos_path_list.append(videos_path+video)
+		videos_path_list.append(os.path.join(videos_path, video))
 
 # This is to resume the training from where it left off, don't forget to remove this!
 # videos_path_list = videos_path_list[10:]
@@ -38,8 +38,8 @@ for item in edits.items():
 
 print('edit completed!')
 
-dlc.analyze_videos(config=config_path, videos=videos_path_list, videotype='.mp4', shuffle=shuffleindex, trainingsetindex=0, gputouse=gputouse, save_as_csv=True, TFGPUinference=True)
-# dlc.analyze_videos(config=config_path, videos=[videos_path+'Control_8_Day_1_cropped.mp4'], videotype='.mp4', shuffle=shuffleindex, trainingsetindex=0, gputouse=gputouse, save_as_csv=True, TFGPUinference=True)
+dlc.analyze_videos(config=config_path, videos=videos_path_list, videotype='.mp4', shuffle=shuffleindex,
+				   trainingsetindex=0, gputouse=gputouse, save_as_csv=True, TFGPUinference=True)
 
 print("dlc_start_training.py with the call", str(sys.argv), "is done!")
 

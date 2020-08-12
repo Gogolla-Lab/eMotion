@@ -5,7 +5,7 @@
 #SBATCH -t 2:00:00
 #SBATCH -c 4
 #SBATCH -C scratch
-#SBATCH -o job_array_process_videos.sh_%J_%a.out
+#SBATCH -o job_array_process_videos.sh_%A_%a.out
 
 module purge
 source activate behaviour-switching
