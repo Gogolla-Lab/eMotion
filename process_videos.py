@@ -118,7 +118,7 @@ def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
     """This function will process all videos in a given folder using the above described functions and the csv file
     containing metadata (process.csv)"""
 
-    Parallel(n_jobs=n_jobs)(delayed(processVideo)(os.path.join(folderPath, v), outputFolder, shape)
+    Parallel(n_jobs=n_jobs, verbose=100)(delayed(processVideo)(os.path.join(folderPath, v), outputFolder, shape)
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 

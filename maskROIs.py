@@ -141,7 +141,7 @@ def maskVideos_poly(folderPath, outputFolder, n_jobs=4):
     """This function will process all videos in a given folder using the above described functions and the csv file
     containing rectangular ROIs (maskROIs.csv)"""
 
-    Parallel(n_jobs=n_jobs)(delayed(maskVideo_poly)(os.path.join(folderPath, v), outputFolder)
+    Parallel(n_jobs=n_jobs, verbose=100)(delayed(maskVideo_poly)(os.path.join(folderPath, v), outputFolder)
                             for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 
