@@ -11,8 +11,4 @@ source activate behaviour-switching
 extension=${1?Error: no extension given}
 scdir=/scratch/onur.serce/all_outputs_main
 
-<<<<<<< HEAD
 python behaviour-switching/utility_functions.py $scdir $extension
-=======
-python behaviour-switching/utility_functions.py $scdir
->>>>>>> origin/master
