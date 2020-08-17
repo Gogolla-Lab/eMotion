@@ -23,3 +23,7 @@ def rename_files(folder, extension):
                 new_filename = os.path.join(folder, df.loc[i, 'reformatted'] + extension)
                 os.rename(old_filename, new_filename)
             print('Renaming completed!')
+            
+if __name__ == "__main__":
+    import sys
+    rename_files(sys.argv[1], sys.argv[2])
