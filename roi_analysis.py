@@ -73,7 +73,7 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
 
     # Process each DataFrame
     dlc_df = pd.read_csv(csv_path, header=[1, 2])
-    dlc_df = dlc_df[bodypart]  # Taking only one bodypart
+    dlc_df = dlc_df[bodypart]  # Take only one body part
     for frame in dlc_df.index:
         mouse_center = Point(dlc_df.loc[frame, 'x'], dlc_df.loc[frame, 'y'])
         dlc_df.loc[frame, 'social'] = mouse_center.intersects(social)
@@ -82,7 +82,7 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
         dlc_df.loc[frame, 'nest'] = mouse_center.intersects(nest)
         dlc_df.loc[frame, 'eating'] = mouse_center.intersects(eating)
     dlc_df.to_csv(os.path.join(folder, csv[:-4] + '_ROIs.csv'))  # [:-4] is to remove '.csv' from the filename
-
+    # ToDo: if average likelihood of all bodyparts are below a certain threshold, the mouse must be in the eating zone!
 
 def get_anymaze_outputs(folder, n_jobs=16):
     Parallel(n_jobs=n_jobs)(delayed(dlc_to_anymaze_output)(os.path.join(folder, csv))
