@@ -26,6 +26,20 @@ def rename_files(folder, extension):
             print('Renaming completed!')
 
 
+def import_dlc_data(folder, scorer):
+    """Collects labeled DLC data in a single csv file and creates video from frames"""
+
+    df_accu = pd.DataFrame()
+
+    for d in os.listdir(folder):
+        subdir = os.path.join(folder, d)
+        if os.path.isdir(subdir) and not subdir.endswith('_labeled'):
+            if os.path.exists(os.path.join(subdir, 'CollectedData_'+scorer+'.h5')):
+                data = pd.read_hdf(os.path.join(subdir, 'CollectedData_'+scorer+'.h5'))
+                df_accu = df_accu.append(data)
+    df_accu.to_csv(os.path.join(folder, "accumulated_data_"+scorer+".csv"), index=True)
+
+
 if __name__ == "__main__":
     import sys
 
