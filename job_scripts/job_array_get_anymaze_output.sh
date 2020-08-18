@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -a 0-40
+#SBATCH -a 0-156
 #SBATCH -p medium
 #SBATCH --qos=short
 #SBATCH -t 1:00:00

@@ -57,22 +57,23 @@ def draw_ROIs(folder):
 
 def dlc_to_anymaze_output(csv_path, bodypart='center'):
     """Converts DLC output to anymaze output using analysis_rois.csv file"""
-# todo: needs to be made compatible with the above functions (above functions are changed so that the analysis_rois have videonames as indexes instead of csv names!)
-    folder, csv = os.path.split(csv_path)
+
+    folder, video = os.path.split(csv_path)
+    video = video[:video.find('DLC')] + '.mp4'
+
     analysis_rois = pd.read_csv(os.path.join(folder, 'analysis_rois.csv'), index_col=0)
 
     # Create shapely ROI objects
-    social = literal_eval(analysis_rois.loc[csv, '4:circle'])
+    social = literal_eval(analysis_rois.loc[video, '4:circle'])
     social = Point(social[0]).buffer(social[1])
-    drinking = literal_eval(analysis_rois.loc[csv, '2:circle'])
+    drinking = literal_eval(analysis_rois.loc[video, '2:circle'])
     drinking = Point(drinking[0]).buffer(drinking[1])
-    marble = literal_eval(analysis_rois.loc[csv, '0:rectangle'])
+    marble = literal_eval(analysis_rois.loc[video, '0:rectangle'])
     marble = box(marble[0], marble[1], marble[0] + marble[2], marble[1] + marble[3])
-    nest = literal_eval(analysis_rois.loc[csv, '1:rectangle'])
+    nest = literal_eval(analysis_rois.loc[video, '1:rectangle'])
     nest = box(nest[0], nest[1], nest[0] + nest[2], nest[1] + nest[3])
-    black_circle = literal_eval(analysis_rois.loc[csv, '3:circle'])
+    black_circle = literal_eval(analysis_rois.loc[video, '3:circle'])
     black_circle = Point(black_circle[0]).buffer(black_circle[1])
-
 
     # Process each DataFrame
     dlc_df = pd.read_csv(csv_path, header=[1, 2])
@@ -84,9 +85,8 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
         dlc_df.loc[frame, 'marble'] = int(mouse_center.intersects(marble))
         dlc_df.loc[frame, 'nest'] = int(mouse_center.intersects(nest))
         dlc_df.loc[frame, 'black_circle'] = int(mouse_center.intersects(black_circle))
-    dlc_df.to_csv(os.path.join(folder, csv[:-4] + '_ROIs.csv'))  # [:-4] is to remove '.csv' from the filename
-    # ToDo: if average likelihood of all bodyparts are below a certain threshold, the mouse must be in the eating zone!
-    # Todo: maximum likelihood can be used!
+    dlc_df.to_csv(os.path.join(folder, video[:-4] + '_ROIs.csv'))  # [:-4] is to remove '.csv' from the filename
+
 
 def get_anymaze_outputs(folder, n_jobs=16):
     Parallel(n_jobs=n_jobs)(delayed(dlc_to_anymaze_output)(os.path.join(folder, csv))
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
     folder = sys.argv[1]
     array_task_id = int(sys.argv[2])
-    csv_paths = [os.path.join(folder, c) for c in os.listdir(folder) if
-                 (c.endswith('.csv') and not c.startswith('analysis'))]
+    csv_paths = [os.path.join(folder, csv) for csv in os.listdir(folder) if
+                 (csv.endswith('.csv') and not csv.startswith('analysis'))]
     csv_path = csv_paths[array_task_id]
     dlc_to_anymaze_output(csv_path=csv_path, bodypart='center')
