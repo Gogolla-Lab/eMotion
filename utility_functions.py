@@ -27,7 +27,7 @@ def rename_files(folder, extension):
             print('Renaming completed!')
 
 
-def import_labeled_dlc_data(folder, prefix, scorer, fps=30):
+def import_labeled_dlc_data(folder, prefix, scorer, videotype='.mp4', fps=30):
     """Collects labeled DLC data in a single csv file and creates a video from frames"""
 
     df_accu = pd.DataFrame()
@@ -48,7 +48,7 @@ def import_labeled_dlc_data(folder, prefix, scorer, fps=30):
         os.mkdir(os.path.join(folder, scorer+'_accumulated'))
 
     kwargs = {'macro_block_size': None}     # to prevent imageio_ffmpeg video resizing
-    writer = imageio.get_writer(os.path.join(folder, scorer+'_accumulated.mp4'), fps=fps, **kwargs)
+    writer = imageio.get_writer(os.path.join(folder, scorer+'_accumulated'+videotype), fps=fps, **kwargs)
     for imgpath in tqdm.tqdm(df_accu.index):
         directory, img = os.path.split(imgpath)
         directory = os.path.split(directory)[-1]
