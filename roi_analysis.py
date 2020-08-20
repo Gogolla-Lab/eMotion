@@ -99,6 +99,6 @@ if __name__ == "__main__":
     folder = sys.argv[1]
     array_task_id = int(sys.argv[2])
     csv_paths = [os.path.join(folder, csv) for csv in os.listdir(folder) if
-                 (csv.endswith('.csv') and not csv.startswith('analysis'))]
+                 (csv.endswith('.csv') and not (csv.startswith('analysis') and 'ROIs' in csv))]
     csv_path = csv_paths[array_task_id]
     dlc_to_anymaze_output(csv_path=csv_path, bodypart='center')
