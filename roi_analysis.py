@@ -74,7 +74,7 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
     nest = box(nest[0], nest[1], nest[0] + nest[2], nest[1] + nest[3])
     black_circle = literal_eval(analysis_rois.loc[video, '3:circle'])
     black_circle = Point(black_circle[0]).buffer(black_circle[1])
-
+    # todo: add snout into the analysis pipeline!
     # Process each DataFrame
     dlc_df = pd.read_csv(csv_path, header=[1, 2])
     dlc_df = dlc_df[bodypart]  # Take only one body part

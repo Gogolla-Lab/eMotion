@@ -3,15 +3,15 @@ import pandas as pd
 import tqdm
 import sys
 
+
 folder = sys.argv[1]
 # folder = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_outputs_main\anymaze_outputs"
-all_csvs = [csv for csv in os.listdir(folder) if csv.endswith('.csv')]
+all_csvs = [csv for csv in os.listdir(folder) if csv.endswith('ROIs.csv')]
 
-df = pd.DataFrame()
-read_data = {}
 
 dtypes = {'social': 'bool', 'drinking': 'bool', 'marble': 'bool', 'nest': 'bool', 'black_circle': 'bool',
-          'animal': 'category', 'day': 'category', 'group': 'category', 'stim': 'category', 'stim_bool': 'bool'}
+          'animal': 'category', 'day': 'category', 'group': 'category', 'stim': 'category', 'stim_bool': 'bool',
+          'zone': 'category'}
 
 
 def label_stim(row):
@@ -32,6 +32,43 @@ def label_stim_bool(row):
         return False
 
 
+def label_zone(row):
+    nest = row['nest']
+    marble = row['marble']
+    drinking = row['drinking']
+    social = row['social']
+    circle = row['black_circle']
+
+    if (nest+marble+drinking+social+circle) == 0:
+        return 'interspace'
+    elif nest == 1:
+        if (marble + drinking + social + circle) == 0:
+            return 'nest'
+        return 'exit1'
+    elif marble == 1:
+        if (nest + drinking + social + circle) == 0:
+            return 'marble'
+        return 'exit2'
+    elif drinking == 1:
+        if (nest + marble + social + circle) == 0:
+            return 'drinking'
+        return 'exit3'
+    elif circle == 1:
+        if social == 1:
+            return 'social'
+        elif social == 0:
+            return 'interspace'
+        else:
+            return 'exit4'
+    elif social == 1:
+        return 'social'
+    else:
+        return 'exit5'
+
+
+read_data = {}
+
+print('Processing .csv files!')
 for csv in tqdm.tqdm(all_csvs):
     splitted_name = csv.rsplit(sep='_')
     if len(splitted_name) == 3:
@@ -51,11 +88,14 @@ for csv in tqdm.tqdm(all_csvs):
         csvdf['time'] = csvdf['time'] / 30
         csvdf['stim'] = csvdf.apply(lambda row: label_stim(row), axis=1)
         csvdf['stim_bool'] = csvdf.apply(lambda row: label_stim_bool(row), axis=1)
+        csvdf['zone'] = csvdf.apply(lambda row: label_zone(row), axis=1)
         csvdf = csvdf.astype(dtypes)
         read_data[csv] = csvdf
 
 save_folder = os.path.join(folder, 'cleaned_h5s')
 if not os.path.exists(save_folder):
+    print('Creating directory:', save_folder)
     os.mkdir(save_folder)
+print('Saving processed data as .h5 files in the directory:', save_folder)
 for key in tqdm.tqdm(read_data):
     read_data[key].to_hdf(path_or_buf=os.path.join(save_folder, key[:-4]+'.h5'), key=key[:-4], format='table')
