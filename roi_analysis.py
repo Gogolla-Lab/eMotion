@@ -3,6 +3,7 @@ import pandas as pd
 import pims
 import cv2
 import os
+import tqdm
 from ast import literal_eval
 from drawer import CircleDrawer, PolygonDrawer
 from shapely.geometry import Point
@@ -77,14 +78,17 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
     # todo: add snout into the analysis pipeline!
     # Process each DataFrame
     dlc_df = pd.read_csv(csv_path, header=[1, 2])
-    dlc_df = dlc_df[bodypart]  # Take only one body part
-    for frame in dlc_df.index:
-        mouse_center = Point(dlc_df.loc[frame, 'x'], dlc_df.loc[frame, 'y'])
+    dlc_df = dlc_df[[bodypart, 'snout']]  # Take only one body part
+    print('Analysing ROIs...')
+    for frame in tqdm.tqdm(dlc_df.index):
+        mouse_center = Point(dlc_df.loc[frame, (bodypart, 'x')], dlc_df.loc[frame, (bodypart, 'y')])
+        snout = Point(dlc_df.loc[frame, ('snout', 'x')], dlc_df.loc[frame, ('snout', 'y')])
         dlc_df.loc[frame, 'social'] = int(mouse_center.intersects(social))
-        dlc_df.loc[frame, 'drinking'] = int(mouse_center.intersects(drinking))
+        dlc_df.loc[frame, 'drinking'] = int(snout.intersects(drinking))
         dlc_df.loc[frame, 'marble'] = int(mouse_center.intersects(marble))
         dlc_df.loc[frame, 'nest'] = int(mouse_center.intersects(nest))
         dlc_df.loc[frame, 'black_circle'] = int(mouse_center.intersects(black_circle))
+    print('done!')
     dlc_df.to_csv(os.path.join(folder, video[:-4] + '_ROIs.csv'))  # [:-4] is to remove '.csv' from the filename
 
 
