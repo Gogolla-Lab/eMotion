@@ -90,6 +90,7 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
         dlc_df.loc[frame, 'black_circle'] = int(mouse_center.intersects(black_circle))
     print('done!')
     dlc_df = dlc_df.drop(columns=[bodypart, 'snout'])
+    dlc_df = dlc_df.droplevel(1, axis='columns')
     dlc_df.to_csv(os.path.join(folder, video[:-4] + '_ROIs.csv'))  # [:-4] is to remove '.csv' from the filename
 
 
