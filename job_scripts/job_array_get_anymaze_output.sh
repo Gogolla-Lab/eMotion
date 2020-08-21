@@ -2,7 +2,7 @@
 #SBATCH -a 0-155
 #SBATCH -p medium
 #SBATCH --qos=short
-#SBATCH -t 04:58
+#SBATCH -t 15:00
 #SBATCH -c 1
 #SBATCH -C scratch
 #SBATCH -o job_array_get_anymaze_output_%A_%a.out
