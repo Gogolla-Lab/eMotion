@@ -75,7 +75,7 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
     nest = box(nest[0], nest[1], nest[0] + nest[2], nest[1] + nest[3])
     black_circle = literal_eval(analysis_rois.loc[video, '3:circle'])
     black_circle = Point(black_circle[0]).buffer(black_circle[1])
-    # todo: add snout into the analysis pipeline!
+
     # Process each DataFrame
     dlc_df = pd.read_csv(csv_path, header=[1, 2])
     dlc_df = dlc_df[[bodypart, 'snout']]  # Take only one body part
@@ -83,8 +83,8 @@ def dlc_to_anymaze_output(csv_path, bodypart='center'):
     for frame in tqdm.tqdm(dlc_df.index):
         mouse_center = Point(dlc_df.loc[frame, (bodypart, 'x')], dlc_df.loc[frame, (bodypart, 'y')])
         snout = Point(dlc_df.loc[frame, ('snout', 'x')], dlc_df.loc[frame, ('snout', 'y')])
-        dlc_df.loc[frame, 'social'] = int(mouse_center.intersects(social))
         dlc_df.loc[frame, 'drinking'] = int(snout.intersects(drinking))
+        dlc_df.loc[frame, 'social'] = int(mouse_center.intersects(social))
         dlc_df.loc[frame, 'marble'] = int(mouse_center.intersects(marble))
         dlc_df.loc[frame, 'nest'] = int(mouse_center.intersects(nest))
         dlc_df.loc[frame, 'black_circle'] = int(mouse_center.intersects(black_circle))

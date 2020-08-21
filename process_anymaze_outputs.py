@@ -97,5 +97,9 @@ if not os.path.exists(save_folder):
     print('Creating directory:', save_folder)
     os.mkdir(save_folder)
 print('Saving processed data as .h5 files in the directory:', save_folder)
+df_accu = pd.DataFrame()
 for key in tqdm.tqdm(read_data):
     read_data[key].to_hdf(path_or_buf=os.path.join(save_folder, key[:-4]+'.h5'), key=key[:-4], format='table')
+    df_accu = df_accu.append(read_data[key])
+df_accu.to_hdf(path_or_buf=os.path.join(save_folder, 'accumulated.h5'), key='df_accu', format='table')
+print('done!')
