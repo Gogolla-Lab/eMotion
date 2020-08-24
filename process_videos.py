@@ -82,6 +82,11 @@ def processVideo(videoPath, outputFolder, shape='circle'):
     df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "process.csv"), index_col=0)
     start = df.loc[os.path.split(videoPath)[-1], 'start']
     end = df.loc[os.path.split(videoPath)[-1], 'end']
+
+    # Shorten processed videos to 1h
+    if end-start > 3600:
+        end = 3600 + start
+
     if shape == 'circle':
         circle = literal_eval(df.loc[os.path.split(videoPath)[-1], 'circle'])
     # elif shape == 'polygon':
