@@ -58,10 +58,10 @@ def maskFrame_poly(frame, vertices):
     return frame
 
 
-def maskFrame_circle(frame, circle):
+def maskFrame_circle(frame, circle, color=(255, 255, 255)):
     canvas = np.zeros(frame.shape, dtype=frame.dtype)
-    cv2.circle(canvas, center=circle[0], radius=circle[1], color=(255, 255, 255), thickness=-1)
-    result = cv2.subtract(frame, canvas)
+    cv2.circle(canvas, center=circle[0], radius=circle[1], color=color, thickness=-1)
+    result = cv2.add(frame, canvas)
 
     return result
 
