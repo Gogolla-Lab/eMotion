@@ -2,7 +2,7 @@
 #SBATCH -a 0-153
 #SBATCH -p medium
 #SBATCH --qos=short
-#SBATCH -t 2:00:00
+#SBATCH -t 1:58:58
 #SBATCH -c 8
 #SBATCH -C scratch
 #SBATCH --mail-type=END
