@@ -1,10 +1,11 @@
 #!/bin/bash
 #SBATCH -p medium
-#SBATCH -t 05:00
-#SBATCH -c 2
+#SBATCH --qos=short
+#SBATCH -t 10:00
+#SBATCH -c 1
 #SBATCH -C scratch
 #SBATCH -o job_rename_files_%J.out
-#SBATCH -d afterok:5217845
+
 
 module purge
 source activate behaviour-switching
