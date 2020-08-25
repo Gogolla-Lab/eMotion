@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH -a 0-154
+#SBATCH -a 0-153
 #SBATCH -p medium
 #SBATCH --qos=short
-#SBATCH -t 6:00:00
-#SBATCH -c 1
+#SBATCH -t 2:00:00
+#SBATCH -c 8
 #SBATCH -C scratch
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o job_array_process_videos.sh_%A_%a.out
+#SBATCH -o job_array_process_videos_%A_%a.out
 
 module purge
 source activate behaviour-switching
