@@ -3,11 +3,9 @@ import pandas as pd
 import tqdm
 import sys
 
-
 folder = sys.argv[1]
 # folder = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_outputs_main\anymaze_outputs"
 all_csvs = [csv for csv in os.listdir(folder) if csv.endswith('ROIs.csv')]
-
 
 dtypes = {'social': 'bool', 'drinking': 'bool', 'marble': 'bool', 'nest': 'bool', 'black_circle': 'bool',
           'animal': 'category', 'day': 'category', 'group': 'category', 'stim': 'category', 'stim_bool': 'bool',
@@ -39,7 +37,7 @@ def label_zone(row):
     social = row['social']
     circle = row['black_circle']
 
-    if (nest+marble+drinking+social+circle) == 0:
+    if (nest + marble + drinking + social + circle) == 0:
         return 'interspace'
     elif nest == 1:
         if (marble + drinking + social + circle) == 0:
@@ -53,15 +51,12 @@ def label_zone(row):
         if (nest + marble + social + circle) == 0:
             return 'drinking'
         return 'exit3'
-    elif circle == 1:
-        if social == 1:
-            return 'social'
-        elif social == 0:
-            return 'interspace'
-        else:
-            return 'exit4'
     elif social == 1:
-        return 'social'
+        if circle == 1:
+            return 'eating_zone'
+        elif circle == 0:
+            return 'social'
+        return 'exit4'
     else:
         return 'exit5'
 
@@ -99,7 +94,7 @@ if not os.path.exists(save_folder):
 print('Saving processed data as .h5 files in the directory:', save_folder)
 df_accu = pd.DataFrame()
 for key in tqdm.tqdm(read_data):
-    read_data[key].to_hdf(path_or_buf=os.path.join(save_folder, key[:-4]+'.h5'), key=key[:-4], format='table')
+    read_data[key].to_hdf(path_or_buf=os.path.join(save_folder, key[:-4] + '.h5'), key=key[:-4], format='table')
     df_accu = df_accu.append(read_data[key])
 df_accu.to_hdf(path_or_buf=os.path.join(save_folder, 'accumulated.h5'), key='df_accu', format='table')
 print('done!')
