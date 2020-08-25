@@ -78,13 +78,18 @@ def processVideo(videoPath, outputFolder, shape='circle'):
     """
 
     print('processVideo called with: ', videoPath, outputFolder)
+    outputFilename = os.path.join(outputFolder, os.path.split(videoPath)[-1].strip(".mp4") + "_processed.mp4")
+    if os.path.exists(outputFilename):
+        print(outputFilename, "already exists. Terminating!")
+        return None
+
     # get the required data from the process.csv file
     df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "process.csv"), index_col=0)
     start = df.loc[os.path.split(videoPath)[-1], 'start']
     end = df.loc[os.path.split(videoPath)[-1], 'end']
 
     # Shorten processed videos to 1h
-    if end-start > 3600:
+    if end - start > 3600:
         end = 3600 + start
 
     if shape == 'circle':
@@ -112,7 +117,6 @@ def processVideo(videoPath, outputFolder, shape='circle'):
     except OSError:
         print(outputFolder, "already exists! Continuing with the process without creating it.")
 
-    outputFilename = os.path.join(outputFolder, os.path.split(videoPath)[-1].strip(".mp4") + "_processed.mp4")
     start_frame = int(start * fps)
     end_frame = int(end * fps)
     imageio.mimwrite(outputFilename, cropped_video[start_frame:end_frame], fps=fps)
@@ -124,11 +128,12 @@ def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
     containing metadata (process.csv)"""
 
     Parallel(n_jobs=n_jobs, verbose=100)(delayed(processVideo)(os.path.join(folderPath, v), outputFolder, shape)
-                            for v in os.listdir(folderPath) if v.endswith(".mp4"))
+                                         for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 
 if __name__ == "__main__":
     import sys
+
     print("Initiating processVideos with args: ", sys.argv)
     processVideos(sys.argv[1], sys.argv[2], n_jobs=int(sys.argv[3]))
 
