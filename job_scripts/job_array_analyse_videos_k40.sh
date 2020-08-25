@@ -12,7 +12,7 @@ module purge
 module load cuda10.0/toolkit/10.0.130
 module load cuda10.0/blas/10.0.130
 module load cudnn/10.0v7.6.3
-source activate DLC-GPU
+source activate behaviour-switching
 
 videofolder=$HOME/week2temp2
 shuffleindex=${1?Error: no shuffleindex given}

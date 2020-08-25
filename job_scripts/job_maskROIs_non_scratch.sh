@@ -11,8 +11,8 @@ source activate behaviour-switching
 
 wd=$HOME/to_be_masked
 outdir=$HOME/to_be_masked/outputs
-mkdir -p $outdir
+mkdir -p "$outdir"
 
 n_jobs=${1?Error: no n_jobs given}
 
-python behaviour-switching/maskROIs.py $wd $outdir $n_jobs
+python behaviour-switching/maskROIs.py "$wd" "$outdir" "$n_jobs"

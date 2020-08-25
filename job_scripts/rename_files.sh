@@ -10,7 +10,7 @@
 module purge
 source activate behaviour-switching
 
-rm -f $HOME/job_array_process_videos*.out
+rm -f "$HOME"/job_array_process_videos*.out
 
 extension=${1?Error: no extension given}
 scdir=/scratch/onur.serce/all_videos/processed

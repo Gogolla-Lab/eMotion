@@ -17,4 +17,4 @@ outdir=$scdir/outputs
 
 mkdir -p $outdir
 
-python behaviour-switching/split_videos.py $scdir $outdir $n_jobs
+python behaviour-switching/split_videos.py $scdir $outdir "$n_jobs"
