@@ -22,8 +22,11 @@ def rename_files(folder, extension):
         else:
             for i in df.index:
                 old_filename = os.path.join(folder, df.loc[i, 'original'] + extension)
-                new_filename = os.path.join(folder, df.loc[i, 'reformatted'] + extension)
-                os.rename(old_filename, new_filename)
+                if os.path.exists(old_filename):
+                    new_filename = os.path.join(folder, df.loc[i, 'reformatted'] + extension)
+                    os.rename(old_filename, new_filename)
+                else:
+                    print(old_filename, 'does not exist!')
             print('Renaming completed!')
 
 
