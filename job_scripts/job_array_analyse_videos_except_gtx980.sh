@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -a 0-11:3
+#SBATCH -a 0-153
 #SBATCH -p gpu
-#SBATCH -t 36:00:00
+#SBATCH -t 24:00:00
 #SBATCH -x dge[008-015]
 #SBATCH -G 1
 #SBATCH -c 2
@@ -15,7 +15,7 @@ module load cuda10.0/blas/10.0.130
 module load cudnn/10.0v7.6.3
 source activate DLC-GPU
 
-videofolder=/scratch/onur.serce/day1/outputs
+videofolder=/scratch2/onur.serce/all_videos/processed
 shuffleindex=${1?Error: no shuffleindex given}
 snapshotindex=${2?Error: no snapshotindex given}
 gputouse=$CUDA_VISIBLE_DEVICES
