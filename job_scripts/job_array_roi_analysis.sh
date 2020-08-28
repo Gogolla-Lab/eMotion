@@ -2,7 +2,7 @@
 #SBATCH -a 0-153
 #SBATCH -p medium
 #SBATCH --qos=short
-#SBATCH -t 30:00
+#SBATCH -t 40:00
 #SBATCH -c 1
 #SBATCH -C scratch
 #SBATCH -o job_array_roi_analysis_%A_%a.out
