@@ -7,7 +7,7 @@ folder = sys.argv[1]
 # folder = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_outputs_main\anymaze_outputs"
 all_csvs = [csv for csv in os.listdir(folder) if csv.endswith('ROIs.csv')]
 
-dtypes = {'social': 'bool', 'drinking': 'bool', 'marble': 'bool', 'nest': 'bool', 'black_circle': 'bool',
+dtypes = {'social': 'bool', 'drinking': 'bool', 'marble': 'bool', 'nest': 'bool', 'mask_circle': 'bool',
           'animal': 'category', 'day': 'category', 'group': 'category', 'stim': 'category', 'stim_bool': 'bool',
           'zone': 'category'}
 
@@ -35,7 +35,7 @@ def label_zone(row):
     marble = row['marble']
     drinking = row['drinking']
     social = row['social']
-    circle = row['black_circle']
+    circle = row['mask_circle']
 
     if (nest + marble + drinking + social + circle) == 0:
         return 'interspace'
