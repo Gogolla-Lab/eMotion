@@ -106,6 +106,8 @@ def analyze_ROIs_on_dlc_output(h5_path, save=True):
 
     # Writing to disk & returning
     if save:
+        if not os.path.exists(os.path.join(folder, 'withROIs')):
+            os.mkdir(os.path.join(folder, 'withROIs'))
         dlc_df.to_hdf(path_or_buf=os.path.join(folder, 'withROIs', video[:-4] + '_withROIs.h5'), key="withROIs")
     return dlc_df
 
