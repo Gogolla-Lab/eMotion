@@ -26,6 +26,3 @@ def collect_lengths(folder):
 
             df.to_csv(os.path.join(folder, 'lengths.csv'))
     df.to_csv(os.path.join(folder, 'lengths.csv'))
-
-folder = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\Week 1\temp"
-collect_lengths(folder)
