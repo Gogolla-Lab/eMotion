@@ -115,7 +115,7 @@ class CircleDrawer(PolygonDrawer):
             elif len(self.points) == 2:
                 cv2.circle(canvas, self.points[1],
                            isqrt((self.points[0][0] - self.points[1][0]) ** 2 + (
-                                       self.points[0][1] - self.points[1][1]) ** 2),
+                                   self.points[0][1] - self.points[1][1]) ** 2),
                            self.final_color, thickness)
             elif len(self.points) > 2:
                 self.points = []
@@ -128,6 +128,7 @@ class CircleDrawer(PolygonDrawer):
         cv2.destroyWindow(self.window_name)
         return self.getCircle()
 
+
 class LineDrawer(PolygonDrawer):
 
     def getLine(self):
@@ -135,7 +136,7 @@ class LineDrawer(PolygonDrawer):
         point2 = self.points[1]
         return point1, point2
 
-    def run(self, thickness = 1):
+    def run(self, thickness=1):
         # Let's create our working window and set a mouse callback to handle events
         cv2.namedWindow(self.window_name)
         cv2.imshow(self.window_name, np.zeros(self.img.shape, np.uint8))
@@ -149,10 +150,10 @@ class LineDrawer(PolygonDrawer):
             if len(self.points) == 1:
                 # Draw all the current polygon segments
                 cv2.line(canvas, self.points[0], self.current,
-                           self.working_color, thickness)
+                         self.working_color, thickness)
             elif len(self.points) == 2:
                 cv2.line(canvas, self.points[0], self.points[1],
-                           self.final_color, thickness)
+                         self.final_color, thickness)
             elif len(self.points) > 2:
                 self.points = []
             # Update the window
@@ -164,10 +165,11 @@ class LineDrawer(PolygonDrawer):
         cv2.destroyWindow(self.window_name)
         return self.getLine()
 
-# # ============================================================================
-import pims
 
-folder = 'J:\\Alja Podgornik\\Multimaze arena\\Cohort 1_June 2020\\Week 1\\temp'
-video = pims.Video(folder + '\\try.mp4')
-cd = LineDrawer('draw a line bitch', video[0])
-coords = cd.run()
+# # ============================================================================
+# import pims
+#
+# folder = 'J:\\Alja Podgornik\\Multimaze arena\\Cohort 1_June 2020\\Week 1\\temp'
+# video = pims.Video(folder + '\\try.mp4')
+# cd = LineDrawer('draw a line bitch', video[0])
+# coords = cd.run()
