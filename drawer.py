@@ -128,11 +128,46 @@ class CircleDrawer(PolygonDrawer):
         cv2.destroyWindow(self.window_name)
         return self.getCircle()
 
+class LineDrawer(PolygonDrawer):
+
+    def getLine(self):
+        point1 = self.points[0]
+        point2 = self.points[1]
+        return point1, point2
+
+    def run(self, thickness = 1):
+        # Let's create our working window and set a mouse callback to handle events
+        cv2.namedWindow(self.window_name)
+        cv2.imshow(self.window_name, np.zeros(self.img.shape, np.uint8))
+        cv2.waitKey(1)
+        cv2.setMouseCallback(self.window_name, self.on_mouse)
+
+        while not self.done:
+            # This is our drawing loop, we just continuously draw new images
+            # and show them in the named window
+            canvas = self.img.copy()
+            if len(self.points) == 1:
+                # Draw all the current polygon segments
+                cv2.line(canvas, self.points[0], self.current,
+                           self.working_color, thickness)
+            elif len(self.points) == 2:
+                cv2.line(canvas, self.points[0], self.points[1],
+                           self.final_color, thickness)
+            elif len(self.points) > 2:
+                self.points = []
+            # Update the window
+            cv2.imshow(self.window_name, canvas)
+            # And wait 50ms before next iteration (this will pump window messages meanwhile)
+            if cv2.waitKey(50) == 27:  # ESC hit
+                self.done = True
+
+        cv2.destroyWindow(self.window_name)
+        return self.getLine()
 
 # # ============================================================================
-# import pims
-#
-# folder = 'J:\\Alja Podgornik\\Multimaze arena\\Cohort 1_June 2020\\Week 1\\temp'
-# video = pims.Video(folder + '\\try.mp4')
-# cd = CircleDrawer('draw a circle bitch', video[0])
-# coords = cd.run()
+import pims
+
+folder = 'J:\\Alja Podgornik\\Multimaze arena\\Cohort 1_June 2020\\Week 1\\temp'
+video = pims.Video(folder + '\\try.mp4')
+cd = LineDrawer('draw a line bitch', video[0])
+coords = cd.run()
