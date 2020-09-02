@@ -15,6 +15,6 @@ print("\n")
 print("This is the name of the program:", sys.argv[0]) 
 print("str(sys.argv):", str(sys.argv), "\n") 
 
-dlc.train_network(config_path, shuffle=shuffleindex, trainingsetindex=0, max_snapshots_to_keep=None, displayiters=None, saveiters=None, maxiters=None, allow_growth=False, gputouse=gputouse, autotune=False, keepdeconvweights=True)
+dlc.train_network(config_path, shuffle=shuffleindex, trainingsetindex=0, max_snapshots_to_keep=None, displayiters=250, saveiters=None, maxiters=None, allow_growth=False, gputouse=gputouse, autotune=False, keepdeconvweights=True)
 
 print("dlc_start_training.py with the call", str(sys.argv), "is done!")
