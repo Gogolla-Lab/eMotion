@@ -49,10 +49,6 @@ def insert_speed(df):
     return df
 
 
-def drop_low_likelihoods(df):
-    pass
-
-
 def process_h5_file(h5_path, save=True):
     folder, h5_name = os.path.split(h5_path)
     splitted_name = h5_name.rsplit(sep='_')
