@@ -121,7 +121,7 @@ if __name__ == "__main__":
     import sys
 
     folder = sys.argv[1]
-    array_task_id = int(sys.argv[2])
+    array_task_id = int(sys.argv[2])  # for slurm job array
     h5_paths = [os.path.join(folder, h5) for h5 in os.listdir(folder) if
                 (h5.endswith('.h5') and not (h5.startswith('analysis') or 'ROIs' in h5))]
     h5_path = h5_paths[array_task_id]
