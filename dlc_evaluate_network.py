@@ -14,6 +14,6 @@ print("\n")
 print("This is the name of the program:", sys.argv[0])
 print("str(sys.argv):", str(sys.argv), "\n")
 
-dlc.evaluate_network(config=config_path, Shuffles=shuffle, plotting=True, gputouse=gputouse)
+dlc.evaluate_network(config=config_path, Shuffles=shuffle, plotting=False, gputouse=gputouse)
 
 print("dlc_evaluate_network.py with the call", str(sys.argv), "is done!")
