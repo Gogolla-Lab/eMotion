@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH -a 0-9
 #SBATCH -p gpu
-#SBATCH -t 2:00:00
+#SBATCH --qos=short
+#SBATCH -t 1:45:00
 #SBATCH -G 1
 #SBATCH -x dge[008-015]
 #SBATCH --mail-type=END
