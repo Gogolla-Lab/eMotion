@@ -1,11 +1,12 @@
 #!/bin/bash
+#SBATCH -a 0-9
 #SBATCH -p gpu
-#SBATCH -t 3:00:00
-#SBATCH -G gtx1080:1
+#SBATCH -t 2:00:00
+#SBATCH -G 1
+#SBATCH -x dge[008-015]
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o dlc_job_evaluate_network_%J.out
-
+#SBATCH -o evaluate_network_%A_%a.out
 
 module purge
 module load cuda10.0/toolkit/10.0.130
@@ -13,12 +14,11 @@ module load cuda10.0/blas/10.0.130
 module load cudnn/10.0v7.6.3
 source activate behaviour-switching
 
-shuffles=${1?Error: no shuffles given} #shuffles are expected to be seperated by "-"
 gputouse=$CUDA_VISIBLE_DEVICES
 
-echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
-nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
+python behaviour-switching/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse"
 
-python behaviour-switching/dlc_evaluate_network.py "$shuffles" "$gputouse"
+echo "dlc_evaluate_network.py $SLURM_ARRAY_TASK_ID $gputouse completed!"
 
-echo "dlc_evaluate_network.py $shuffles $gputouse completed!"
+#Manually edit:
+#slurm parameters: -a -t
