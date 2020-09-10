@@ -1,10 +1,8 @@
 #!/bin/bash
 #SBATCH -a 0-9
 #SBATCH -p gpu
-#SBATCH --qos=short
-#SBATCH -t 1:45:00
-#SBATCH -G 1
-#SBATCH -x dge[008-015]
+#SBATCH -t 5:00:00
+#SBATCH -G gtx1080:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o evaluate_network_%A_%a.out
@@ -22,4 +20,5 @@ python behaviour-switching/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gput
 echo "dlc_evaluate_network.py $SLURM_ARRAY_TASK_ID $gputouse completed!"
 
 #Manually edit:
+#iteration and shuffleindex in config.yaml file
 #slurm parameters: -a -t
