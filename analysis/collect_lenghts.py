@@ -8,7 +8,7 @@ from math import sqrt
 def collect_lengths(folder):
     videos = [mp4 for mp4 in os.listdir(folder) if (mp4.endswith(".mp4"))]
 
-    if not os.path.exists(os.path.join(folder, 'lenghts.csv')):
+    if not os.path.exists(os.path.join(folder, 'lengths.csv')):
         df = pd.DataFrame(index=videos, columns=['line', 'frame_shape', 'known_length_px', 'known_length_cm'])
         df.to_csv(os.path.join(folder, 'lengths.csv'))
 
