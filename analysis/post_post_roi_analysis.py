@@ -5,7 +5,7 @@ from joblib import Parallel, delayed
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
-
+# h5_path = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_videos\processed\withROIs\hr8_day5_withROIs-processed.h5"
 def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dist_threshold_in_cm=0.1):
     main_df = pd.read_hdf(h5_path)
     videoname = os.path.split(h5_path)[-1][:-22] + '.mp4'
@@ -84,7 +84,7 @@ def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dis
     return imputed_df
 
 
-def get_bouts_df(imputed_df, bodypart_to_use='center', likelihood_threshold=0.25, bout_threshold_sec=1.5):
+def get_bouts_df(imputed_df, bodypart_to_use='center', likelihood_threshold=0.25, bout_threshold_sec=3):
     # Collapse the bouts
     zones_shifted = imputed_df[imputed_df.zone != imputed_df.zone.shift(-1)]
     time_shifted = zones_shifted.loc[:, 'time'].shift(
@@ -92,7 +92,7 @@ def get_bouts_df(imputed_df, bodypart_to_use='center', likelihood_threshold=0.25
     time_differance = zones_shifted.loc[:, 'time'] - time_shifted
     zones_shifted['time'] = time_differance
     zones_shifted = zones_shifted[zones_shifted['time'] > bout_threshold_sec]
-    # Repeat the process to merge the fragmented bouts after filtering out bouts shorter then 3 secs
+    # Repeat the process to merge the fragmented bouts after filtering out bouts shorter then bout_threshold_sec
     zones_shifted['time'] = zones_shifted['time'].cumsum()
     zones_shifted = zones_shifted[zones_shifted.zone != zones_shifted.zone.shift(-1)]
     time_shifted = zones_shifted.loc[:, 'time'].shift(fill_value=0)
@@ -143,7 +143,7 @@ def save_cleaned_df(df, save_folder):
 
 
 def execute_all_functions(h5_path, save_folder, bodypart_to_use='center', likelihood_threshold=0.25,
-                          dist_threshold_in_cm=0.1, bout_threshold_sec=1.5):
+                          dist_threshold_in_cm=0.2, bout_threshold_sec=3):
     imputed_df = imputation(h5_path, bodypart_to_use, likelihood_threshold, dist_threshold_in_cm)
     bouts_df = get_bouts_df(imputed_df, bodypart_to_use, likelihood_threshold, bout_threshold_sec)
     df = clean_and_combine(imputed_df, bouts_df)
