@@ -7,10 +7,21 @@ df <- df %>% dplyr::rename('frame' = 'X1')
 df$group <- as.factor(df$group)
 df$day <- as.factor(df$day)
 df$period <- as.factor(df$period)
+df$zone <- as.factor(df$zone)
+df$bout_zone <- as.factor(df$bout_zone)
 
 ### Day1 ###
 
 day1 <- df %>% dplyr::filter(day==1)
+
+
+day1 %>% filter(zone != 'unclassified') %>%
+  group_by(group, animal, zone) %>% count(zone) %>%
+  group_by(group, animal, zone) %>% summarise(cum_time_sec=sum(n)/30) %>%
+  ggboxplot(x='group', y='cum_time_sec', fill='group', add = 'jitter',
+            facet.by = c('zone'), scales="free") +
+  stat_compare_means()
+
 
 # Time in the zones
 day1 %>% filter(zone != 'unclassified') %>%
@@ -28,6 +39,15 @@ day1 %>% filter(zone != 'unclassified') %>% filter(zone != 'drinking') %>%
             add.params = list(color = 'animal'),
             facet.by = c('zone', 'period'), scales="free") +
   theme(legend.position = 'none')
+
+# temp
+day1 %>% filter(zone != 'unclassified') %>% filter(zone != 'drinking') %>%
+  group_by(group, animal, zone, period) %>% count(zone) %>%
+  group_by(group, animal, zone, period) %>% summarise(cum_time_sec=sum(n)/30) %>%
+  ggpaired(x='period', y='cum_time_sec', line.color = 'group',
+           id='animal', color='group', scales="free",
+           facet.by = c('zone', 'group'))
+
 
 day1 %>% filter(zone != 'unclassified') %>% filter(zone != 'drinking') %>%
   group_by(group, animal, zone, opto) %>% count(zone) %>%
