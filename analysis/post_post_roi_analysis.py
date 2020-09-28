@@ -5,8 +5,9 @@ from joblib import Parallel, delayed
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
+
 # h5_path = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_videos\processed\withROIs\hr8_day5_withROIs-processed.h5"
-def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dist_threshold_in_cm=0.1):
+def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dist_threshold_in_cm=0.5):
     main_df = pd.read_hdf(h5_path)
     videoname = os.path.split(h5_path)[-1][:-22] + '.mp4'
 
@@ -15,6 +16,8 @@ def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dis
     known_length_px = lengths.loc[videoname, 'known_length_px']
     known_length_cm = lengths.loc[videoname, 'known_length_cm']
     one_px = known_length_cm / known_length_px
+    if np.isnan(one_px):
+        raise ValueError('Check the lengths.csv file and make sure that all values are filled!')
     for speedcol in main_df.loc[:, main_df.columns.get_level_values(1) == 'speed']:
         main_df.loc[:, speedcol] = main_df.loc[:, speedcol] * one_px  # Convert dV/dt to cm/s
 
@@ -29,7 +32,7 @@ def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dis
     visible = mostly_visible | center_visible
 
     snout_max = main_df.loc[:, main_df.columns.get_level_values(1) == 'likelihood'].idxmax(axis=1) == (
-    'snout', 'likelihood')
+        'snout', 'likelihood')
     snout_in_social = main_df.loc[:, ('snout', 'social')]
     snout_in_drinking = main_df.loc[:, ('snout', 'drinking')]
     snout_unvisible = main_df.loc[:, ('snout', 'likelihood')].le(0.25)
@@ -156,6 +159,7 @@ def execute_script_with_parallel(folder, outputfolder, n_jobs=32):
         os.mkdir(outputfolder)
 
     Parallel(n_jobs=n_jobs, verbose=100)(delayed(execute_all_functions)(file, outputfolder) for file in files)
+
 
 folder = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_videos\processed\withROIs"
 outputfolder = os.path.join(folder, 'cleaned')
