@@ -70,6 +70,36 @@ def append_mask_and_crop_ROIs(folder, shape='circle'):
 
     print(os.path.join(folder, 'process.csv'), "created with all required entries!")
 
+def trimVideo(videoPath, outputFolder):
+
+    print('trimVideo called with: ', videoPath, outputFolder)
+    outputFilename = os.path.join(outputFolder, os.path.split(videoPath)[-1].strip(".mp4") + "_trimmed.mp4")
+    if os.path.exists(outputFilename):
+        print(outputFilename, "already exists. Terminating!")
+        return None
+
+    # get the required data from the process.csv file
+    df = pd.read_csv(os.path.join(os.path.split(videoPath)[0], "trims.csv"), index_col=0)
+    start = df.loc[os.path.split(videoPath)[-1], 'start']
+    end = df.loc[os.path.split(videoPath)[-1], 'end']
+
+    # Shorten processed videos to 1h
+    if end - start > 3600:
+        end = 3600 + start
+
+    video = pims.ImageIOReader(videoPath)
+    fps = video.frame_rate
+
+    # writing to disk
+    try:
+        os.mkdir(outputFolder)
+    except OSError:
+        print(outputFolder, "already exists! Continuing with the process without creating it.")
+
+    start_frame = int(start * fps)
+    end_frame = int(end * fps)
+    imageio.mimwrite(outputFilename, video[start_frame:end_frame], fps=fps)
+    print('Completed: processVideo with parameters: ', videoPath, outputFolder)
 
 def processVideo(videoPath, outputFolder, shape='circle'):
     """
