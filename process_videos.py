@@ -70,7 +70,8 @@ def append_mask_and_crop_ROIs(folder, shape='circle'):
 
     print(os.path.join(folder, 'process.csv'), "created with all required entries!")
 
-def trimVideo(videoPath, outputFolder):
+
+def trimVideo(videoPath, outputFolder, use_imageio=True):
 
     print('trimVideo called with: ', videoPath, outputFolder)
     outputFilename = os.path.join(outputFolder, os.path.split(videoPath)[-1].strip(".mp4") + "_trimmed.mp4")
@@ -87,8 +88,12 @@ def trimVideo(videoPath, outputFolder):
     if end - start > 3600:
         end = 3600 + start
 
-    video = pims.ImageIOReader(videoPath)
-    fps = video.frame_rate
+    if use_imageio:
+        video = pims.ImageIOReader(videoPath)
+        fps = video.frame_rate
+    else:
+        video = pims.Video(videoPath)
+        fps = video.frame_rate
 
     # writing to disk
     try:
@@ -100,6 +105,7 @@ def trimVideo(videoPath, outputFolder):
     end_frame = int(end * fps)
     imageio.mimwrite(outputFilename, video[start_frame:end_frame], fps=fps)
     print('Completed: processVideo with parameters: ', videoPath, outputFolder)
+
 
 def processVideo(videoPath, outputFolder, shape='circle'):
     """
@@ -158,6 +164,15 @@ def processVideos(folderPath, outputFolder, shape='circle', n_jobs=16):
     containing metadata (process.csv)"""
 
     Parallel(n_jobs=n_jobs, verbose=100)(delayed(processVideo)(os.path.join(folderPath, v), outputFolder, shape)
+                                         for v in os.listdir(folderPath) if v.endswith(".mp4"))
+
+
+def trimVideos(folderPath, outputFolder, use_imageio=False, n_jobs=20):
+    """This function will process all videos in a given folder using the above described functions and the csv file
+    containing metadata (process.csv)"""
+
+    Parallel(n_jobs=n_jobs, verbose=100)(delayed(trimVideo)(os.path.join(folderPath, v),
+                                                            outputFolder, use_imageio=use_imageio)
                                          for v in os.listdir(folderPath) if v.endswith(".mp4"))
 
 
