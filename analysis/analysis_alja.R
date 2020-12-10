@@ -1,10 +1,8 @@
 library(tidyverse)
 library(rstatix)
 library(ggpubr)
-library(ruler)
 
-
-patha = "C:/Users/apodgornik/Desktop/temp/combined_2.csv"
+patha = "C:/Users/serce/Desktop/combined_2.csv"
 df <- read_csv(patha)
 df <- df %>% dplyr::rename('frame' = 'X1')
 df$group <- as.factor(df$group)
@@ -1214,9 +1212,9 @@ df %>% group_by(group, animal, period, zone, day) %>%
   filter(group != 'hr') %>%
   filter(!is.infinite(locomotion)) %>%
   filter(locomotion < 70) %>%
-  group_by(group, animal, zone, day) %>%
+  group_by(group, animal, period) %>%
   ggline(x='period', y='locomotion', color='group', fill='group', facet.by = 'zone',
-         add = c(("mean_se"), 'jitter'), add.params = list(alpha=0.5), size = 1) + 
+         add = c(("mean_se")), add.params = list(alpha=0.5), size = 1) + 
   theme_light() + 
   ylab('Cumulative locomotion (m)') +
   #stat_compare_means(label.y = 100) +
