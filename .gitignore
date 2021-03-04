@@ -1,2 +1,5 @@
 __pycache__/*.pyc
 .Rproj.user
+*.ipynb
+*.npy
+*.png
