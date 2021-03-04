@@ -6,7 +6,17 @@ from joblib import Parallel, delayed
 pd.options.mode.chained_assignment = None  # default='warn'
 
 
+# Numpy forward-fill for imputing NaN values
+def numpy_fill(arr):
+    '''Solution provided by Divakar.'''
+    mask = np.isnan(arr)
+    idx = np.where(~mask, np.arange(mask.size), 0)
+    np.maximum.accumulate(idx, out=idx)
+    out = arr[idx]
+    return out
+
 # h5_path = r"J:\Alja Podgornik\Multimaze arena\Cohort 1_June 2020\all_videos\processed\withROIs\hr8_day5_withROIs-processed.h5"
+
 def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dist_threshold_in_cm=0.5):
     main_df = pd.read_hdf(h5_path)
     videoname = os.path.split(h5_path)[-1][:-22] + '.mp4'
@@ -72,6 +82,8 @@ def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dis
     loco['x_diff_px'] = loco.loc[:, 'x'].diff()
     loco['y_diff_px'] = loco.loc[:, 'y'].diff()
     loco['diff_cm'] = np.sqrt(np.square(loco['x_diff_px']) + np.square(loco['y_diff_px'])) * one_px
+    unfiltered_diff = loco['diff_cm'].copy(deep=True)
+    unfiltered_diff[0] = 0
     loco_filtered = loco[loco['diff_cm'].ge(dist_threshold_in_cm)]
     loco_filtered.loc[0, :] = loco.iloc[0]
     loco_filtered = loco_filtered.sort_index()
@@ -82,6 +94,8 @@ def imputation(h5_path, bodypart_to_use='center', likelihood_threshold=0.25, dis
     loco_filtered['cum_dist_cm'] = loco_filtered['diff_cm'].cumsum()
     loco_filtered.loc[0, 'cum_dist_cm'] = 0
     main_df['cum_dist_cm'] = loco_filtered['cum_dist_cm']
+    main_df["cumsum_unfiltered"] = unfiltered_diff.cumsum()
+    main_df['cum_dist_cm'] = numpy_fill(np.array(main_df['cum_dist_cm']))
     imputed_df = main_df
 
     return imputed_df
@@ -94,7 +108,11 @@ def get_bouts_df(imputed_df, bodypart_to_use='center', likelihood_threshold=0.25
         fill_value=float(zones_shifted.loc[zones_shifted.index[0], 'time']))
     time_differance = zones_shifted.loc[:, 'time'] - time_shifted
     zones_shifted['time'] = time_differance
+    # zones_shifted["cum_diff"] = zones_shifted["cumsum_unfiltered"] - zones_shifted["cum_dist_cm"]
     zones_shifted = zones_shifted[zones_shifted['time'] > bout_threshold_sec]
+    # temp = zones_shifted["cum_diff"].iloc[0]
+    # zones_shifted["cum_diff"] = zones_shifted["cum_diff"].diff()
+    # zones_shifted["cum_diff"].iloc[0] = temp
     # Repeat the process to merge the fragmented bouts after filtering out bouts shorter then bout_threshold_sec
     zones_shifted['time'] = zones_shifted['time'].cumsum()
     zones_shifted = zones_shifted[zones_shifted.zone != zones_shifted.zone.shift(-1)]
@@ -103,6 +121,7 @@ def get_bouts_df(imputed_df, bodypart_to_use='center', likelihood_threshold=0.25
     zones_shifted['time'] = time_differance
     zones_shifted = zones_shifted.rename(columns={'time': 'bout_duration', 'zone': 'bout_zone'}, level=0)
     bouts_df = zones_shifted
+    bouts_df["dist_diff"] = bouts_df["cumsum_unfiltered"] - bouts_df['cum_dist_cm']
 
     # Add averaged_bout_velocities
     # Prepare bodypart marker data for the analysis
@@ -120,6 +139,12 @@ def get_bouts_df(imputed_df, bodypart_to_use='center', likelihood_threshold=0.25
         i = idx
     bouts_df['bout_velocity'] = values
 
+    # Jitter index
+    jitter = (bouts_df['cumsum_unfiltered'].diff() / bouts_df['cum_dist_cm'].diff())
+    # jitter.plot()
+    # plt.show()
+    bouts_df['jitter'] = jitter
+
     return bouts_df
 
 
@@ -127,7 +152,7 @@ def clean_and_combine(imputed_df, bouts_df):
     imputed_df = imputed_df.loc[:, ['time', 'animal', 'group', 'day', 'zone', 'period', 'opto', 'cum_dist_cm']]
     imputed_df = imputed_df.droplevel(1, axis=1)
     bouts_df = bouts_df.loc[:,
-               ['bout_duration', 'animal', 'group', 'day', 'bout_zone', 'period', 'opto', 'bout_velocity']]
+               ['bout_duration', 'animal', 'group', 'day', 'bout_zone', 'period', 'opto', 'bout_velocity', 'jitter']]
     bouts_df = bouts_df.droplevel(1, axis=1)
 
     df = imputed_df.copy(deep=True)
