@@ -6,8 +6,5 @@ __pycache__/*.pyc
 *.RData
 *.Rhistory
 .eggs
-vame.egg-info
-vame_onur-Nov26-2020
-vame_onur_2-Nov27-2020
 /.vscode/
 .idea
