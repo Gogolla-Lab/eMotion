@@ -8,3 +8,7 @@ __pycache__/*.pyc
 .eggs
 /.vscode/
 .idea
+*.szd
+*.mp4
+*.avi
+*.csv

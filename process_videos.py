@@ -90,10 +90,9 @@ def trimVideo(videoPath, outputFolder, use_imageio=True):
 
     if use_imageio:
         video = pims.ImageIOReader(videoPath)
-        fps = video.frame_rate
     else:
         video = pims.Video(videoPath)
-        fps = video.frame_rate
+    fps = video.frame_rate
 
     # writing to disk
     try:

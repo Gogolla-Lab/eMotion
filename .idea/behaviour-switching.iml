@@ -12,7 +12,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vame_onur_2-Nov27-2020" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (behaviour-switching)" jdkType="Python SDK" />
-    <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
