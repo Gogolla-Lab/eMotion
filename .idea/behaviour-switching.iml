@@ -5,6 +5,11 @@
       <excludeFolder url="file://$MODULE_DIR$/.Rproj.user" />
       <excludeFolder url="file://$MODULE_DIR$/.eggs" />
       <excludeFolder url="file://$MODULE_DIR$/.ipynb_checkpoints" />
+      <excludeFolder url="file://$MODULE_DIR$/FiberPhotometry/Anymaze files" />
+      <excludeFolder url="file://$MODULE_DIR$/FiberPhotometry/FP_processed data" />
+      <excludeFolder url="file://$MODULE_DIR$/FiberPhotometry/Multimaze" />
+      <excludeFolder url="file://$MODULE_DIR$/FiberPhotometry/Multimaze scoring" />
+      <excludeFolder url="file://$MODULE_DIR$/FiberPhotometry/plots" />
       <excludeFolder url="file://$MODULE_DIR$/analysis/.ipynb_checkpoints" />
       <excludeFolder url="file://$MODULE_DIR$/unused_code" />
       <excludeFolder url="file://$MODULE_DIR$/vame.egg-info" />
