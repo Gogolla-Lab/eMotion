@@ -6,9 +6,7 @@ from datetime import timedelta, datetime
 import matplotlib.dates as md
 from scipy.signal import medfilt
 from scipy.stats import sem
-from os import chdir
 
-chdir(r"J:\Alja Podgornik\FP_Alja")
 
 def find_nearest(array, value):
     array = np.asarray(array)
