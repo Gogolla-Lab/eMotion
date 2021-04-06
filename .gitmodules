@@ -1,3 +1,6 @@
 [submodule "VAME"]
 	path = VAME
 	url = https://github.com/LINCellularNeuroscience/VAME.git
+[submodule "fiber_photometry"]
+	path = fiber_photometry
+	url = https://github.com/mkm4884/fiber_photometry.git
