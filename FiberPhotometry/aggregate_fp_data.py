@@ -5,6 +5,7 @@ from os.path import join
 from FiberPhotometry.color_code_behavior import find_nearest
 from FiberPhotometry.mean_behavior_episodes import get_sec_from_min_sec
 from FiberPhotometry.mean_behavior_episodes import read_summary_file
+from tqdm import tqdm
 from joblib import Parallel, delayed
 
 
@@ -90,27 +91,44 @@ def save_as_hdf(df, subfolder_name='modeling_data'):
 
 
 def perform_all_single_animal(animal_id):
-    animal, day = str(animal_id).split('.')
-    animal = int(animal)
-    day = int(day)
-    data, behavior_labels = load_animal_data(animal, day)
-    behav_bouts, zone_bouts = find_zone_and_behavior_episodes(data, behavior_labels)
-    df = add_episode_data(data, behav_bouts, zone_bouts)
-    save_as_hdf(df)
+    try:
+        animal, day = str(animal_id).split('.')
+        animal = int(animal)
+        day = int(day)
+        data, behavior_labels = load_animal_data(animal, day)
+        behav_bouts, zone_bouts = find_zone_and_behavior_episodes(data, behavior_labels)
+        df = add_episode_data(data, behav_bouts, zone_bouts)
+        save_as_hdf(df)
+    except FileNotFoundError as err:
+        print(str(err))
+
+
+def aggregate(modeling_data_folder):
+    accu = []
+    for file in tqdm(os.listdir(modeling_data_folder)):
+        if file.endswith('.h5'):
+            animal, day, ext = file.split('.')
+            accu.append(pd.read_hdf(join(modeling_data_folder, file)))
+            df = pd.concat(accu)
+    return df
 
 
 if __name__ == "__main__":
     main_dir = r"J:\Alja Podgornik\FP_Alja"
     behavior_dir = join(main_dir, 'Multimaze scoring')
     dff_dir = join(main_dir, 'FP_processed data')
+    modeling_data_folder = join(main_dir, 'modeling_data')
     summary_file_path = r'Multimaze sheet summary.xlsx'
     all_exps = read_summary_file(summary_file_path)
 
-    # Parallel(n_jobs=32, verbose=100)(delayed(perform_all_single_animal)(animal_id)
-    #                                  for animal_id in all_exps['Ani_ID'])
+    Parallel(n_jobs=32, verbose=100)(delayed(perform_all_single_animal)(animal_id)
+                                     for animal_id in all_exps['Ani_ID'])
 
-    for animal_id in all_exps['Ani_ID']:
-        try:
-            perform_all_single_animal(animal_id)
-        except FileNotFoundError as err:
-            print(str(err))
+    # for animal_id in tqdm(all_exps['Ani_ID']):
+    #     try:
+    #         perform_all_single_animal(animal_id)
+    #     except FileNotFoundError as err:
+    #         print(str(err))
+
+    accu = aggregate(modeling_data_folder)
+    accu.to_hdf(join(main_dir, 'modeling_data', 'aggregated.h5'), key='nokey')
