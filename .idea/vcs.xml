@@ -5,5 +5,6 @@
     <mapping directory="$PROJECT_DIR$/DLCconverterDLT" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/DeepLabCut" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/VAME" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/fiber_photometry" vcs="Git" />
   </component>
 </project>
