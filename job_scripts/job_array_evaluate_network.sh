@@ -18,7 +18,7 @@ source activate behaviour-switching
 
 gputouse=$CUDA_VISIBLE_DEVICES
 
-python behaviour-switching/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse"
+python behaviour-switching/worker_scripts/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse"
 
 echo "dlc_evaluate_network.py $SLURM_ARRAY_TASK_ID $gputouse completed!"
 

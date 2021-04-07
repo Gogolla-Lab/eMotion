@@ -23,7 +23,7 @@ gputouse=$CUDA_VISIBLE_DEVICES
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
 # $SLURM_ARRAY_TASK_ID will be used as an index to a python script
-python behaviour-switching/dlc_analyse_videos_jobarray.py "$shuffleindex" "$snapshotindex" "$videofolder" "$SLURM_ARRAY_TASK_ID" "$gputouse"
+python behaviour-switching/worker_scripts/dlc_analyse_videos_jobarray.py "$shuffleindex" "$snapshotindex" "$videofolder" "$SLURM_ARRAY_TASK_ID" "$gputouse"
 
 #Manually edit:
 #slurm parameters: -a -t

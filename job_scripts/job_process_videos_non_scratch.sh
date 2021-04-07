@@ -15,4 +15,4 @@ wd=$HOME/to_be_processed
 outdir=$HOME/to_be_processed/outputs
 mkdir -p "$outdir"
 
-python behaviour-switching/process_videos.py "$wd" "$outdir" "$n_jobs"
+python behaviour-switching/preprocessing/process_videos.py "$wd" "$outdir" "$n_jobs"

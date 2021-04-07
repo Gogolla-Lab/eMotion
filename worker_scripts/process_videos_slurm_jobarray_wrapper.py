@@ -1,7 +1,7 @@
 import sys
 import os
 import pandas as pd
-from process_videos import processVideo
+from preprocessing.process_videos import processVideo
 
 inputfolder = sys.argv[1]
 outputfolder = sys.argv[2]

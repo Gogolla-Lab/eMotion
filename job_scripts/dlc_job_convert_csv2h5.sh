@@ -14,6 +14,6 @@ module load cuda10.0/blas/10.0.130
 module load cudnn/10.0v7.6.3
 source activate behaviour-switching
  
-python behaviour-switching/dlc_convertcsv2h5.py
+python behaviour-switching/worker_scripts/dlc_convertcsv2h5.py
 
 echo "Job Completed!"

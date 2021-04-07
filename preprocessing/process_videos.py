@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 import imageio
 import pims
-from drawer import CircleDrawer
-from maskROIs import maskFrame_circle
+from preprocessing.drawer import CircleDrawer
+from preprocessing.maskROIs import maskFrame_circle
 from ast import literal_eval
 from joblib import Parallel, delayed
 

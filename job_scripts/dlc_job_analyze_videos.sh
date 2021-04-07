@@ -20,6 +20,6 @@ gputouse=$CUDA_VISIBLE_DEVICES
 
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python behaviour-switching/dlc_analyze_videos.py "$shuffleindex" "$snapshotindex" "$gputouse"
+python behaviour-switching/worker_scripts/dlc_analyze_videos.py "$shuffleindex" "$snapshotindex" "$gputouse"
 
 echo "dlc_analyze_videos.py $shuffleindex $snapshotindex is completed!"

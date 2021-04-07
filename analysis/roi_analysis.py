@@ -5,7 +5,7 @@ import cv2
 import os
 import tqdm
 from ast import literal_eval
-from drawer import CircleDrawer, PolygonDrawer
+from preprocessing.drawer import CircleDrawer, PolygonDrawer
 from shapely.geometry import Point
 from shapely.geometry import box
 # from shapely.geometry import Polygon

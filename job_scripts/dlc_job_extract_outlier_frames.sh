@@ -23,6 +23,6 @@ nframes=${6?Error: no number of frames to extract given}
 
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python behaviour-switching/dlc_extract_outlier_frames.py "$shuffleindex" "$snapshotindex" "$outlieralgorithm" "$epsilon" "$extractionalgorithm" "$nframes"
+python behaviour-switching/worker_scripts/dlc_extract_outlier_frames.py "$shuffleindex" "$snapshotindex" "$outlieralgorithm" "$epsilon" "$extractionalgorithm" "$nframes"
 
 echo "dlc_extract_outlier_frames.py $shuffleindex $snapshotindex $outlieralgorithm $epsilon $extractionalgorithm $nframes is completed!"

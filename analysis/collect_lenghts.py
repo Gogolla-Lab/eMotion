@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import pims
-from drawer import LineDrawer
+from preprocessing.drawer import LineDrawer
 from math import sqrt
 
 

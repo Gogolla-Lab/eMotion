@@ -22,6 +22,6 @@ gputouse=$CUDA_VISIBLE_DEVICES  # ToDo: Unused! creating labeled videos might no
 
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python behaviour-switching/dlc_create_labeled_video.py "$shuffleindex" "$snapshotindex" "$listindex1" "$listindex2"
+python behaviour-switching/worker_scripts/dlc_create_labeled_video.py "$shuffleindex" "$snapshotindex" "$listindex1" "$listindex2"
 
 echo "dlc_create_labeled_video.py $shuffleindex $snapshotindex $listindex1 $listindex2 is completed!"

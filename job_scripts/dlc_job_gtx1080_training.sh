@@ -19,4 +19,4 @@ gputouse=$CUDA_VISIBLE_DEVICES
 echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits
 
-python behaviour-switching/dlc_start_training.py "$shuffleindex" "$gputouse"
+python behaviour-switching/worker_scripts/dlc_start_training.py "$shuffleindex" "$gputouse"

@@ -1,6 +1,5 @@
 import os
 os.environ["DLClight"]="True"
-
 import deeplabcut as dlc
 
 config_path = "/usr/users/onur.serce/dlc_real-alja_onur-2020-04-06/config.yaml"

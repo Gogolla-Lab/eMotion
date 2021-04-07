@@ -20,7 +20,7 @@ h_out_dir=$h_in_dir/outputs
 mkdir -p $sc_out_dir
 cp "$h_in_dir"/* $sc_in_dir
 
-python behaviour-switching/process_videos.py $sc_in_dir $sc_out_dir "$n_jobs"
+python behaviour-switching/preprocessing/process_videos.py $sc_in_dir $sc_out_dir "$n_jobs"
 
 mkdir "$h_out_dir"
 cp $sc_out_dir/* "$HOME"/"$h_out_dir"
