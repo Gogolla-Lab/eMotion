@@ -4,3 +4,6 @@
 [submodule "fiber_photometry"]
 	path = fiber_photometry
 	url = https://github.com/mkm4884/fiber_photometry.git
+[submodule "anipose"]
+	path = anipose
+	url = https://github.com/lambdaloop/anipose.git
