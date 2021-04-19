@@ -14,7 +14,8 @@ def encode_single(video_path):
 
 
 def encode_all(folder_path, n_jobs='default'):
-    videos = [os.path.join(folder_path, video) for video in os.listdir(folder_path) if video.endswith('.avi')]
+    videos = [os.path.join(folder_path, video) for video in os.listdir(folder_path) if video.endswith('.avi') and
+              'encoded' not in video]
 
     if n_jobs == 'default':
         if len(videos) > 3:
@@ -24,7 +25,7 @@ def encode_all(folder_path, n_jobs='default'):
 
     Parallel(n_jobs=n_jobs, verbose=100)(
         delayed(encode_single)(os.path.join(folder_path, video)) for video in os.listdir(folder_path) if
-        video.endswith('.avi'))
+        video.endswith('.avi') and 'encoded' not in video)
 
 
 if __name__ == '__main__':
