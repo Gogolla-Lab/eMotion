@@ -128,7 +128,7 @@ def configure_gain(cam, gain: float):
     :param cam: Camera to acquire images from.
     :type cam: CameraPtr
     :param gain: gain in dB
-    :type gain: float or string (only 'off')
+    :type gain: float
     :return: True if successful, False otherwise.
     :rtype: bool
     """
@@ -148,7 +148,7 @@ def configure_gain(cam, gain: float):
 
         # EnumEntry node (always associated with an Enumeration node)
         node_gainauto_mode_off = node_gainauto_mode.GetEntryByName("Off")
-        if not PySpin.IsAvailable(node_gainauto_mode_off) or not PySpin.IsWritable(node_gainauto_mode_off):
+        if not PySpin.IsAvailable(node_gainauto_mode_off):
             print('Unable to configure gain (entry retrieval). Aborting...')
             return False
 
@@ -162,10 +162,12 @@ def configure_gain(cam, gain: float):
             print('Unable to configure gain (float retrieval). Aborting...')
             return False
 
-        if gain > 40:
-            print("Max. gain is 40dB. Change the code if you'd like to increase it!")
-            gain = 40.0
-        elif gain <= 0 or gain == 'off':
+        max_gain = cam.Gain.GetMax()
+
+        if gain > cam.Gain.GetMax():
+            print("Max. gain is {}dB!".format(max_gain))
+            gain = max_gain
+        elif gain <= 0:
             gain = 0.0
 
         # Set gain
@@ -305,3 +307,18 @@ def configure_camera(cam, exposure_time: int, gain: float, trigger_type='hardwar
                     result = configure_trigger(cam, trigger_type)
 
     return result
+
+
+# system = PySpin.System.GetInstance()
+# cameras = system.GetCameras()
+# cam = cameras[0]
+# cam.Init()
+#
+# configure_camera(cam, 30000, 0)
+# cam.BeginAcquisition()
+# cam.EndAcquisition()
+#
+# cam.DeInit()
+# del cam
+# cameras.Clear()
+# system.ReleaseInstance()
