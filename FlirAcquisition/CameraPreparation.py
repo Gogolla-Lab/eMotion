@@ -170,7 +170,40 @@ def configure_gain(cam, gain: float):
 
         # Set gain
         node_gain.SetValue(float(gain))
-        print('Gain set to {} dB'.format(gain))
+        print('Gain set to {} dB.'.format(gain))
+
+    except PySpin.SpinnakerException as ex:
+        print('Error: %s' % ex)
+        return False
+
+    return result
+
+
+def disable_gamma(cam):
+    """This function disables the gamma correction.
+
+     :param cam: Camera to disable gamma correction.
+     :type cam: CameraPtr
+     """
+
+    print('*** DISABLING GAMMA CORRECTION ***\n')
+
+    try:
+        result = True
+
+        # Retrieve GenICam nodemap (nodemap)
+        nodemap = cam.GetNodeMap()
+
+        # Retrieve node (boolean)
+        node_gamma_enable_bool = PySpin.CBooleanPtr(nodemap.GetNode("GammaEnable"))
+
+        if not PySpin.IsAvailable(node_gamma_enable_bool) or not PySpin.IsWritable(node_gamma_enable_bool):
+            print('Unable to disable gamma (boolean retrieval). Aborting...')
+            return False
+
+        # Set value to False (disable gamma correction)
+        node_gamma_enable_bool.SetValue(False)
+        print('Gamma correction disabled.')
 
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
@@ -185,10 +218,10 @@ def configure_trigger(cam, trigger_type='hardware'):
     the trigger source. Trigger mode is then enabled, which has the camera capture only a single image upon the 
     execution of the chosen trigger. 
 
-     :param trigger_type: 'hardware' or 'software'
-     :type trigger_type: str
      :param cam: Camera to configure trigger for.
      :type cam: CameraPtr
+     :param trigger_type: 'hardware' or 'software'
+     :type trigger_type: str
      :return: True if successful, False otherwise.
      :rtype: bool
     """
@@ -244,5 +277,31 @@ def configure_trigger(cam, trigger_type='hardware'):
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
         return False
+
+    return result
+
+
+def configure_camera(cam, exposure_time: int, gain: float, trigger_type='hardware'):
+    """This function configures the camera with the given options.
+
+    :param cam: Camera to configure.
+    :type cam: CameraPtr
+    :param exposure_time: exposure time in microseconds
+    :type exposure_time: int
+    :param gain: gain in dB
+    :type gain: float or string (only 'off')
+    :param trigger_type: 'hardware' or 'software'
+    :type trigger_type: str
+    :return: True if successful, False otherwise.
+    :rtype: bool
+    """
+
+    result = False
+
+    if configure_acquisition_mode(cam):
+        if configure_exposure(cam, exposure_time):
+            if configure_gain(cam, gain):
+                if disable_gamma(cam):
+                    result = configure_trigger(cam, trigger_type)
 
     return result
