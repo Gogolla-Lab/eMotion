@@ -6,6 +6,7 @@ __pycache__/*.pyc
 *.RData
 *.Rhistory
 .eggs
+.idea
 /.vscode/
 .idea
 *.szk
