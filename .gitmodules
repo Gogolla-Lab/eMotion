@@ -7,3 +7,6 @@
 [submodule "anipose"]
 	path = anipose
 	url = https://github.com/lambdaloop/anipose.git
+[submodule "campy"]
+	path = campy
+	url = https://github.com/onurserce/campy.git
