@@ -91,7 +91,7 @@ def track_argus_wand(grayscale_video_path, cam_id, n_blobs=2, threshold=.3, thre
 
 
 def track_wands_in_all_videos(folder_path, n_jobs='default',
-                              n_blobs=2, threshold=.3, threshold_step=.025, min_threshold=.025, max_threshold=5):
+                              n_blobs=2, threshold=.3, threshold_step=.025, min_threshold=.15, max_threshold=.45):
     videos = [os.path.join(folder_path, video) for video in os.listdir(folder_path)
               if (video.endswith('.avi') or video.endswith('.mp4'))]
 
