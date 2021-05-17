@@ -131,3 +131,14 @@ def aggregate_wand_data_outputs(folder_path):
 
     csv = csv.reindex(sorted(csv.columns), axis=1)
     csv.to_csv(os.path.join(folder_path, 'aggregated-xypts.csv'), index=False)
+
+
+if __name__ == "__main__":
+    import sys
+    from time import time
+    start = time()
+    # ToDo: Add all arguments for cli usage
+    folder_path = sys.argv[1]
+    track_wands_in_all_videos(folder_path=folder_path)
+    aggregate_wand_data_outputs(folder_path=folder_path)
+    print('Completed! Elapsed wall-time: {} seconds'.format(time()-start))
