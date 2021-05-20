@@ -40,7 +40,7 @@ class TriggerType:
     SOFTWARE = 1
     HARDWARE = 2
 
-CHOSEN_TRIGGER = TriggerType.SOFTWARE
+CHOSEN_TRIGGER = TriggerType.HARDWARE
 
 
 def configure_trigger(cam):

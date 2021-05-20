@@ -229,6 +229,8 @@ def print_genicam_device_info(cam):
             print('Height: unavailable')
             result = False
 
+        print(cam.Width.ToString())
+
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
         return False

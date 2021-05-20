@@ -34,7 +34,7 @@ class AviType:
     MJPG = 1
     H264 = 2
 
-chosenAviType = AviType.UNCOMPRESSED  # change me!
+chosenAviType = AviType.H264  # change me!
 NUM_IMAGES = 10  # number of images to use in AVI file
 
 

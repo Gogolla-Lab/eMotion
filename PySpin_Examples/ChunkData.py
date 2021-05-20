@@ -49,7 +49,7 @@ class ChunkDataTypes:
     NODEMAP = 2
 
 
-CHOSEN_CHUNK_DATA_TYPE = ChunkDataTypes.NODEMAP
+CHOSEN_CHUNK_DATA_TYPE = ChunkDataTypes.IMAGE
 
 
 def configure_chunk_data(nodemap):
@@ -108,7 +108,6 @@ def configure_chunk_data(nodemap):
         # to be of type CEnumEntryPtr, we can use a list comprehension to
         # transform all of our collected INodes into CEnumEntryPtrs at once.
         entries = [PySpin.CEnumEntryPtr(chunk_selector_entry) for chunk_selector_entry in chunk_selector.GetEntries()]
-
         print('Enabling entries...')
 
         # Iterate through our list and select each entry node to enable
@@ -244,9 +243,13 @@ def display_chunk_data_from_image(image):
         # Retrieve sequencer set active
         sequencer_set_active = chunk_data.GetSequencerSetActive()
         print('\tSequencer set active: {}'.format(sequencer_set_active))
-
+        thelist = []
         # Retrieve timestamp
         timestamp = chunk_data.GetTimestamp()
+        print('\n\n\n')
+        print(type(timestamp))
+        thelist.append(timestamp)
+        print(timestamp)
         print('\tTimestamp: {}'.format(timestamp))
 
         # Retrieve width; width recorded in pixels
@@ -256,6 +259,8 @@ def display_chunk_data_from_image(image):
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
         result = False
+
+    print(thelist)
     return result
 
 
