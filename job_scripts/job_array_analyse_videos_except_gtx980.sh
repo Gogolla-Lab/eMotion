@@ -10,10 +10,11 @@
 #SBATCH -o job_array_analyse_videos_except_gtx980_%A_%a.out
 
 module purge
-module load cuda10.0/toolkit/10.0.130
-module load cuda10.0/blas/10.0.130
-module load cudnn/10.0v7.6.3
-source activate behaviour-switching
+module load cuda/11.1.0
+module load cudnn/7.6.5.32-10.2-linux-x64
+
+source "$HOME"/.bashrc
+source activate DLC-GPU
 
 videofolder=/scratch2/onur.serce/all_videos/processed
 shuffleindex=${1?Error: no shuffleindex given}
