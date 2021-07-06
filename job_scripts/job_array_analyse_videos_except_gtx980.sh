@@ -2,7 +2,7 @@
 #SBATCH -a 0-64
 #SBATCH -p gpu
 #SBATCH -t 36:00:00
-#SBATCH -x dge[001-015], dte[001-010]
+#SBATCH -x dge[001-015],dte[001-010]
 #SBATCH -G 1
 #SBATCH -c 2
 #SBATCH --mail-type=END
