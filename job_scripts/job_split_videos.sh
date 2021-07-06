@@ -17,4 +17,4 @@ outdir=$scdir/outputs
 
 mkdir -p $outdir
 
-python behaviour-switching/preprocessing/split_videos.py $scdir $outdir "$n_jobs"
+python eMotion/preprocessing/split_videos.py $scdir $outdir "$n_jobs"

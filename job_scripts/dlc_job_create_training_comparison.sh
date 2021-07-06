@@ -15,7 +15,7 @@ module load cudnn/7.6.5.32-10.2-linux-x64
 source "$HOME"/.bashrc
 source activate DLC-GPU
  
-python behaviour-switching/worker_scripts/dlc_create_training_comparison.py<<input
+python eMotion/worker_scripts/dlc_create_training_comparison.py<<input
 yes
 input
 

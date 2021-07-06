@@ -15,4 +15,4 @@ rm -f "$HOME"/job_array_process_videos*.out
 extension=${1?Error: no extension given}
 scdir=/scratch/onur.serce/all_videos/processed
 
-python behaviour-switching/utility_functions.py $scdir "$extension"
+python eMotion/utility_functions.py $scdir "$extension"

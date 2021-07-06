@@ -18,7 +18,7 @@ outdir=/scratch/onur.serce/temp_process/outputs
 mkdir -p $outdir
 cp "$HOME"/to_be_masked/* $scdir
 
-python behaviour-switching/preprocessing/maskROIs.py $scdir $outdir "$n_jobs"
+python eMotion/preprocessing/maskROIs.py $scdir $outdir "$n_jobs"
 
 mkdir "$HOME"/to_be_masked/outputs
 cp outdir/* "$HOME"/to_be_masked/outputs

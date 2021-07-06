@@ -15,4 +15,4 @@ mkdir -p "$outdir"
 
 n_jobs=${1?Error: no n_jobs given}
 
-python behaviour-switching/preprocessing/maskROIs.py "$wd" "$outdir" "$n_jobs"
+python eMotion/preprocessing/maskROIs.py "$wd" "$outdir" "$n_jobs"

@@ -15,6 +15,6 @@ module load cudnn/7.6.5.32-10.2-linux-x64
 source "$HOME"/.bashrc
 source activate DLC-GPU
  
-python behaviour-switching/worker_scripts/dlc_convertcsv2h5.py
+python eMotion/worker_scripts/dlc_convertcsv2h5.py
 
 echo "Job Completed!"

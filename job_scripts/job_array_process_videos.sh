@@ -15,4 +15,4 @@ source activate behaviour-switching
 sc_in_dir=/scratch/onur.serce/all_videos
 sc_out_dir=$sc_in_dir/processed
 
-python behaviour-switching/worker_scripts/process_videos_slurm_jobarray_wrapper.py $sc_in_dir $sc_out_dir "$SLURM_ARRAY_TASK_ID"
+python eMotion/worker_scripts/process_videos_slurm_jobarray_wrapper.py $sc_in_dir $sc_out_dir "$SLURM_ARRAY_TASK_ID"

@@ -15,4 +15,4 @@ wd=$HOME/to_be_trimmed
 outdir=$wd/outputs
 mkdir -p "$outdir"
 
-python behaviour-switching/worker_scripts/trim_videos_slurm_jobarray_wrapper.py "$wd" "$outdir" "$SLURM_ARRAY_TASK_ID"
+python eMotion/worker_scripts/trim_videos_slurm_jobarray_wrapper.py "$wd" "$outdir" "$SLURM_ARRAY_TASK_ID"

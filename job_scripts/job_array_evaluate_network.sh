@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH -a 0-9
 #SBATCH -p gpu
+#SBATCH -x dge007
 #SBATCH --qos=short
 #SBATCH -t 1:30:00
 #SBATCH -G gtx1080:1

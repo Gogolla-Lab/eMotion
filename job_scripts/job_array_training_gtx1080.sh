@@ -17,4 +17,4 @@ source activate DLC-GPU
 
 gputouse=$CUDA_VISIBLE_DEVICES
 
-python behaviour-switching/worker_scripts/dlc_start_training.py "$SLURM_ARRAY_TASK_ID" "$gputouse"
+python eMotion/worker_scripts/dlc_start_training.py "$SLURM_ARRAY_TASK_ID" "$gputouse"
