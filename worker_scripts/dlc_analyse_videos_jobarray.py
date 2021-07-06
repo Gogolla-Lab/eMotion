@@ -13,7 +13,7 @@ gputouse = int(sys.argv[5])
 
 import deeplabcut as dlc
 
-config_path = "/usr/users/onur.serce/dlc_real-alja_onur-2020-04-06/config.yaml"
+config_path = "/usr/users/onur.serce/emotipose-Stoyo-2021-05-10/config.yaml"
 videos = [os.path.join(videofolder, vid) for vid in os.listdir(videofolder) if
           (vid.endswith('.mp4') or vid.endswith('.MP4'))]
 

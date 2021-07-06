@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH -a 0-153
+#SBATCH -a 0-64
 #SBATCH -p gpu
-#SBATCH -t 24:00:00
-#SBATCH -x dge[008-015]
+#SBATCH -t 36:00:00
+#SBATCH -x dge[001-015], dte[001-010]
 #SBATCH -G 1
 #SBATCH -c 2
 #SBATCH --mail-type=END
@@ -16,7 +16,7 @@ module load cudnn/7.6.5.32-10.2-linux-x64
 source "$HOME"/.bashrc
 source activate DLC-GPU
 
-videofolder=/scratch2/onur.serce/all_videos/processed
+videofolder="$HOME"/isopreteranol
 shuffleindex=${1?Error: no shuffleindex given}
 snapshotindex=${2?Error: no snapshotindex given}
 gputouse=$CUDA_VISIBLE_DEVICES
