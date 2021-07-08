@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -a 0-64
+#SBATCH -a 0-63
 #SBATCH -p gpu
-#SBATCH -t 36:00:00
+#SBATCH -t 10:00:00
 #SBATCH -x dge[001-015],dte[001-010]
 #SBATCH -G 1
-#SBATCH -c 2
+#SBATCH --mem=40G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_array_analyse_videos_except_gtx980_%A_%a.out
