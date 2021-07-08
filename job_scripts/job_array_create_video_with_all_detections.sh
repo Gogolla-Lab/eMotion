@@ -1,11 +1,10 @@
 #!/bin/bash
-#SBATCH -p gpu
-#SBATCH -t 16:00:00
-#SBATCH -G gtx1080:1
+#SBATCH -a 0-63:1
+#SBATCH -c 4
+#SBATCH -t 12:00:00
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o dlc_job_create_labeled_video_%J.out
-
+#SBATCH -o job_array_create_video_with_all_detections_%A_%a.out
 
 module purge
 module load cuda/11.1.0
@@ -16,13 +15,9 @@ source activate DLC-GPU
 
 shuffleindex=${1?Error: no shuffleindex given}
 snapshotindex=${2?Error: no snapshotindex given}
-listindex1=${3?Error: no listindex1 given}
-listindex2=${4?Error: no listindex2 given}
-
-gputouse=$CUDA_VISIBLE_DEVICES  # ToDo: Unused! creating labeled videos might not require gpu!
 
 nvidia-smi --query-gpu=memory.total --format=csv
 
-python eMotion/worker_scripts/dlc_create_labeled_video.py "$shuffleindex" "$snapshotindex" "$listindex1" "$listindex2"
+python eMotion/worker_scripts/dlc_create_video_with_all_detections.py "$shuffleindex" "$snapshotindex" "$SLURM_ARRAY_TASK_ID"
 
 echo "dlc_create_labeled_video.py $shuffleindex $snapshotindex $listindex1 $listindex2 is completed!"
