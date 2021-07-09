@@ -2,9 +2,9 @@
 #SBATCH -a 0-63
 #SBATCH -p gpu
 #SBATCH -t 10:00:00
-#SBATCH -x dge[001-015],dte[001-010]
+#SBATCH -x dge[008-015],dte[001-010]
 #SBATCH -G 1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_array_analyse_videos_except_gtx980_%A_%a.out
