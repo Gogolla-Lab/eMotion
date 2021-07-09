@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -a 0-63
 #SBATCH -p gpu
-#SBATCH -t 10:00:00
+#SBATCH -t 12:00:00
 #SBATCH -x dge[008-015],dte[001-010]
 #SBATCH -G 1
 #SBATCH --mem=80G
