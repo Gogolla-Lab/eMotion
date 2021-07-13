@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -a 0-63
-#SBATCH -t 2:00:00
+#SBATCH -t 1:00:00
 #SBATCH --qos=short
 #SBATCH -c 1
 #SBATCH --mem=16G

@@ -13,8 +13,8 @@ config_path = "/usr/users/onur.serce/emotipose-Stoyo-2021-05-10/config.yaml"
 pickles = [os.path.join(videofolder, pkl) for pkl in os.listdir(videofolder) if (pkl.endswith('_el.pickle'))]
 
 dlc.stitch_tracklets(
-    config_path,
-    pickle_file,
+    config_path=config_path,
+    pickle_file=pickles[index: index+1],
     n_tracks=None,
     min_length=10,
     split_tracklets=True,

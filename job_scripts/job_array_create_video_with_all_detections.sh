@@ -8,8 +8,9 @@
 #SBATCH -o job_array_create_video_with_all_detections_%A_%a.out
 
 module purge
-module load cuda/11.1.0
-module load cudnn/8.0.4.30-11.1-linux-x64
+# Try this without loading cuda and cudnn first!
+#module load cuda/11.1.0
+#module load cudnn/8.0.4.30-11.1-linux-x64
 
 source "$HOME"/.bashrc
 source activate DLC-GPU
