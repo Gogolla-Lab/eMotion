@@ -8,7 +8,6 @@ shuffleindex = int(sys.argv[1])
 snapshotindex = int(sys.argv[2])
 videofolder = sys.argv[3]
 index = int(sys.argv[4])  # $SLURM_ARRAY_TASK_ID
-gputouse = int(sys.argv[5])
 
 import deeplabcut as dlc
 
@@ -27,7 +26,7 @@ print(edits)
 
 dlc.convert_detections2tracklets(
     config=config_path,
-    videos=videos,
+    videos=videos[index:index + 1],
     videotype='.mp4',
     shuffle=shuffleindex,
     trainingsetindex=0,
