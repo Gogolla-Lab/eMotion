@@ -25,8 +25,8 @@ dlc.stitch_tracklets(
     output_name='',
 )
 
-df = pd.read_hdf(pickles[index])
-newname = pickles[index][:-3] + '.csv'
+df = pd.read_hdf(pickles[index][:-6] + h5)
+newname = pickles[index][:-2] + 'csv'
 df.to_csv(newname)
 
 print("dlc_stitch_tracklets_jobarray.py with the call", str(sys.argv), "is done!")
