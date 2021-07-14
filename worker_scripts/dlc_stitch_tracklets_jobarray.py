@@ -13,6 +13,8 @@ import deeplabcut as dlc
 config_path = "/usr/users/onur.serce/emotipose-Stoyo-2021-05-10/config.yaml"
 pickles = [os.path.join(videofolder, pkl) for pkl in os.listdir(videofolder) if (pkl.endswith('_el.pickle'))]
 
+print('Working on:', pickles[index])
+
 dlc.stitch_tracklets(
     config_path=config_path,
     pickle_file=pickles[index],

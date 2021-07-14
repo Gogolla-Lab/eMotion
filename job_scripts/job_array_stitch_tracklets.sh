@@ -1,9 +1,8 @@
 #!/bin/bash
 #SBATCH -a 0-63
-#SBATCH -t 1:00:00
-#SBATCH --qos=short
-#SBATCH -c 1
-#SBATCH --mem=16G
+#SBATCH -t 24:00:00
+#SBATCH -c 4
+#SBATCH --mem=64G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_array_stitch_tracklets_%A_%a.out
