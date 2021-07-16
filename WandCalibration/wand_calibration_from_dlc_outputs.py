@@ -47,7 +47,7 @@ if __name__ == "__main__":
     data.columns = pd.MultiIndex.from_arrays([cams, tracks, coords])
     data.columns = data.columns.swaplevel(0, 1)
     data.columns = ['__'.join(col) for col in data.columns]
-    data.reindex(sorted(data.columns), axis=1)
+    data = data.reindex(sorted(data.columns), axis=1)
     data.to_csv(os.path.join(folder, 'aggregated_xypts.csv'), index=False)
 
     print('aggregated_xypts.csv is saved into: {}'.format(folder))
