@@ -1,4 +1,5 @@
 import os
+
 os.environ["DLClight"] = "True"
 import sys
 import deeplabcut as dlc
@@ -44,9 +45,9 @@ for item in edits.items():
 print('edit completed!')
 
 dlc.create_labeled_video(
-    config = config_path,
-    videos=videos_path_list[listindex:listindex+1],
-    videotype='.mp4',
+    config=config_path,
+    videos=videos_path_list[listindex:listindex + 1],
+    videotype='mp4',
     shuffle=shuffleindex,
     trainingsetindex=0,
     filtered=False,
@@ -66,7 +67,6 @@ dlc.create_labeled_video(
     modelprefix='',
     track_method='',
 )
-
 
 print("dlc_create_labeled_video.py with the call", str(sys.argv), "is done!")
 
