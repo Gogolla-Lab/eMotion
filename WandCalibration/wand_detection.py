@@ -34,7 +34,14 @@ def find_blobs(grayscale_image, n_blobs, threshold=.3, threshold_step=.025, min_
 
     # Return NaN if the threshold is out of bounds
     if not min_threshold <= threshold <= max_threshold:
-        return np.full((n_blobs, 3), np.NaN), threshold
+        if threshold <= min_threshold:
+            print("Couldn't find any blobs, increasing the threshold to {}".format(threshold + threshold_step))
+            return np.full((n_blobs, 3), np.NaN), threshold + threshold_step
+        elif threshold >= max_threshold:
+            print("Couldn't find any blobs, decreasing the threshold to {}".format(threshold - threshold_step))
+            return np.full((n_blobs, 3), np.NaN), threshold - threshold_step
+        else:
+            raise Exception
 
     result = blob_dog(grayscale_image, threshold=threshold)
     if grayscale_image.ndim != 2:
@@ -88,11 +95,12 @@ def track_argus_wand(grayscale_video_path, cam_id, n_blobs=2, threshold=.3, thre
     df['blob_detection_threshold'] = thresholds
 
     df.to_hdf(grayscale_video_path[:-4] + '_wand_' + cam_id + '_yxrpts.h5', index=False, key='nokey')
-    print(grayscale_video_path[:-4] + '_wand_' + cam_id + '_yxrpts.h5 created!')
+    df.to_csv(grayscale_video_path[:-4] + '_wand_' + cam_id + '_yxrpts.csv', index=False)
+    print(grayscale_video_path[:-4] + '_wand_' + cam_id + '_yxrpts created!')
 
 
 def track_wands_in_all_videos(folder_path, n_jobs='default',
-                              n_blobs=2, threshold=.3, threshold_step=.025, min_threshold=.025, max_threshold=5):
+                              n_blobs=2, threshold=.3, threshold_step=.025, min_threshold=.12, max_threshold=1):
     videos = [os.path.join(folder_path, video) for video in os.listdir(folder_path)
               if (video.endswith('.avi') or video.endswith('.mp4'))]
 
@@ -124,10 +132,14 @@ def aggregate_wand_data_outputs(folder_path):
     for h5 in h5s:
         data = pd.read_hdf(h5, key='nokey')
         cameraName, cameraId = h5.split('_')[-3:-1]
+        splitted = h5.split('_')
+        cameraName = os.path.split(splitted[0])[1]
+        cameraId = splitted[1]
+        filler = splitted[-2]
         for track in ['Track 1', 'Track 2']:
             for axis in ['x', 'y']:
                 csv[track + '_' + cameraName + '_' + cameraId + '_' + axis] = \
-                    data[track + '_' + cameraName + '_' + cameraId + '_' + axis]
+                    data[track + '__' + filler + '_' + axis]
 
     csv = csv.reindex(sorted(csv.columns), axis=1)
     csv.to_csv(os.path.join(folder_path, 'aggregated-xypts.csv'), index=False)
