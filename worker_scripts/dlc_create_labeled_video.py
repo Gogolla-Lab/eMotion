@@ -31,6 +31,9 @@ print("This is the name of the program:", sys.argv[0])
 print("str(sys.argv):", str(sys.argv), "\n")
 print("\n")
 print("\n")
+print("Will work on: {}".format(videos_path_list[listindex:listindex + 1]))
+print("\n")
+print("\n")
 
 sleep(uniform(0, 240))
 
