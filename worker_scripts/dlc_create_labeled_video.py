@@ -2,14 +2,15 @@ import os
 os.environ["DLClight"] = "True"
 import sys
 import deeplabcut as dlc
+from time import sleep
+from random import uniform
 
 shuffleindex = int(sys.argv[1])
 snapshotindex = int(sys.argv[2])
-listindex1 = int(sys.argv[3])
-listindex2 = int(sys.argv[4])
+listindex = int(sys.argv[3])
 
-config_path = "/usr/users/onur.serce/dlc_real-alja_onur-2020-04-06/config.yaml"
-videos_path = "/usr/users/onur.serce/dlc_real-alja_onur-2020-04-06/videos/"
+config_path = "/usr/users/onur.serce/emotipose-Stoyo-2021-05-10"
+videos_path = "/usr/users/onur.serce/isopreteranol"
 
 videos_path_list = []
 for video in os.listdir(videos_path):
@@ -30,6 +31,8 @@ print("str(sys.argv):", str(sys.argv), "\n")
 print("\n")
 print("\n")
 
+sleep(uniform(0, 240))
+
 edits = {'snapshotindex': snapshotindex}
 
 dlc.auxiliaryfunctions.edit_config(config_path, edits)
@@ -40,10 +43,30 @@ for item in edits.items():
 
 print('edit completed!')
 
-dlc.create_labeled_video(config=config_path, videos=videos_path_list[listindex1:listindex2], videotype='.mp4',
-                         shuffle=shuffleindex, trainingsetindex=0, filtered=False, save_frames=True, Frames2plot=None,
-                         delete=True, displayedbodyparts='all', codec='mp4v', outputframerate=None, destfolder=None,
-                         draw_skeleton=True, trailpoints=0, displaycropped=False)
+dlc.create_labeled_video(
+    config = config_path,
+    videos=videos_path_list[listindex:listindex+1],
+    videotype='.mp4',
+    shuffle=shuffleindex,
+    trainingsetindex=0,
+    filtered=False,
+    fastmode=True,
+    save_frames=False,
+    keypoints_only=False,
+    Frames2plot=None,
+    displayedbodyparts='all',
+    displayedindividuals='all',
+    codec='mp4v',
+    outputframerate=None,
+    destfolder=None,
+    draw_skeleton=True,
+    trailpoints=0,
+    displaycropped=False,
+    color_by='bodypart',
+    modelprefix='',
+    track_method='',
+)
+
 
 print("dlc_create_labeled_video.py with the call", str(sys.argv), "is done!")
 
