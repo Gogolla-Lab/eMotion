@@ -9,7 +9,7 @@ shuffleindex = int(sys.argv[1])
 snapshotindex = int(sys.argv[2])
 listindex = int(sys.argv[3])
 
-config_path = "/usr/users/onur.serce/emotipose-Stoyo-2021-05-10"
+config_path = "/usr/users/onur.serce/emotipose-Stoyo-2021-05-10/config.yaml"
 videos_path = "/usr/users/onur.serce/isopreteranol"
 
 videos_path_list = []

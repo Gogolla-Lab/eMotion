@@ -2,7 +2,7 @@
 #SBATCH -a 0-63
 #SBATCH -t 16:00:00
 #SBATCH -c 8
-#SBATCH --mem=120G
+#SBATCH --mem=100G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_array_create_labeled_video_%A_%a.out
