@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -a 0:63
+#SBATCH -a 0-63
 #SBATCH -t 2:00:00
 #SBATCH --qos=short
 #SBATCH -c 2
