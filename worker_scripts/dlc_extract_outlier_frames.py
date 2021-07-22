@@ -9,7 +9,8 @@ snapshotindex = int(sys.argv[2])
 outlieralgorithm = sys.argv[3]
 epsilon = float(sys.argv[4])
 extractionalgorithm = sys.argv[5]
-videoindex = int(sys.argv[6])
+nframes = int(sys.argv[6])
+videoindex = int(sys.argv[7])
 
 import deeplabcut as dlc
 
@@ -36,7 +37,7 @@ print("\n")
 
 sleep(uniform(0, 240))
 
-edits = {'snapshotindex': snapshotindex, 'numframestopick': nframes}
+edits = {'snapshotindex': snapshotindex, 'numframes2pick': nframes}
 print('\nediting the config file... ')
 for item in edits.items():
     print(item)

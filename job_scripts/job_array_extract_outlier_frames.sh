@@ -6,7 +6,7 @@
 #SBATCH --mem=80G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o dlc_job_extract_outlier_frames_%A_%a.out
+#SBATCH -o job_array_extract_outlier_frames_%A_%a.out
 
 
 module purge
@@ -21,7 +21,8 @@ snapshotindex=${2?Error: no snapshotindex given}
 outlieralgorithm=${3?Error: no outlier algorithm given}
 epsilon=${4?Error: no epsilon given}
 extractionalgorithm=${5?Error: no extraction algorithm given}
+nframes2pick=${6?Error: no nframes2pick given}
 
-python eMotion/worker_scripts/dlc_extract_outlier_frames.py "$shuffleindex" "$snapshotindex" "$outlieralgorithm" "$epsilon" "$extractionalgorithm" "$SLURM_ARRAY_TASK_ID"
+python eMotion/worker_scripts/dlc_extract_outlier_frames.py "$shuffleindex" "$snapshotindex" "$outlieralgorithm" "$epsilon" "$extractionalgorithm" "$nframes2pick" "$SLURM_ARRAY_TASK_ID"
 
-echo "dlc_extract_outlier_frames.py $shuffleindex $snapshotindex $outlieralgorithm $epsilon $extractionalgorithm $SLURM_ARRAY_TASK_ID is completed!"
+echo "dlc_extract_outlier_frames.py $shuffleindex $snapshotindex $outlieralgorithm $epsilon $extractionalgorithm $nframes2pick $SLURM_ARRAY_TASK_ID is completed!"
