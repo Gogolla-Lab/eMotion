@@ -11,7 +11,7 @@ print("'dlc.__version__' is:'", dlc.__version__)
 print("\n")
 
 dlc.create_multianimaltraining_dataset(
-    config=config,
+    config=config_path,
     num_shuffles=num_shuffles,
     Shuffles=None,
     windows2linux=False,

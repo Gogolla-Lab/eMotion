@@ -12,7 +12,7 @@ source "$HOME"/.bashrc
 source activate DLC-GPU
 
 config=${1?Error: no config.yaml path given}
-num_shuffles=${1?Error: no num_shuffles given}
+num_shuffles=${2?Error: no num_shuffles given}
 
 python eMotion/worker_scripts/dlc_create_multianimaltraining_dataset.py "$config" "$num_shuffles"
 
