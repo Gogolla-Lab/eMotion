@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH -a 1-6
 #SBATCH -p gpu
-#SBATCH --qos=short
-#SBATCH -t 1:30:00
-#SBATCH -G gtx1080:1
+#SBATCH -t 18:00:00
+#SBATCH -G 1
+#SBATCH -x dge[008-015],dte[001-010]
+#SBATCH --mem=64G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
 #SBATCH -o job_array_evaluate_network_%A_%a.out
