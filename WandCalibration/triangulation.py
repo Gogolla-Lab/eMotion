@@ -37,6 +37,7 @@ def single_csv(csv_path, camera_profiles, dlt):
     except Exception as err:
         print(err)
 
+
 if __name__ == "__main__":
     import sys
     from time import time

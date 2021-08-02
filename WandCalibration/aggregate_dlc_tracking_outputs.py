@@ -48,6 +48,7 @@ def parse_dlc_outputs(folder: os.path, suffix: str, likelihood_threshold=0.6, sc
 
     aggregate = pd.concat(h5s, axis=1)
 
+    offs = []
     print('Scaling and correcting for offsets')
     if scale != 1:
         aggregate = aggregate * scale
@@ -56,6 +57,8 @@ def parse_dlc_outputs(folder: os.path, suffix: str, likelihood_threshold=0.6, sc
             aggregate.loc[:, col] = aggregate.loc[:, col] + offset_x
         elif offset_y != 0.0 and col.endswith('_y'):
             aggregate.loc[:, col] = aggregate.loc[:, col] + offset_y
+        else:
+            offs.append(col)
 
     dates = []
     recs = []

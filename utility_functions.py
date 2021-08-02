@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pandas as pd
 import imageio as io
 from tqdm import tqdm
@@ -162,6 +163,37 @@ def import_labeled_dlc_data_to_separate_folders(folder, scorer, videotype='.mp4'
                             key='df_with_missing', mode='w', format='table')
                 data.to_csv(os.path.join(newsubdir, 'CollectedData_' + scorer + '.csv'), index=True)
 
+
+def fill_missing_machine_labels(labeled_data_folder):
+    rec_folders = [os.path.join(labeled_data_folder, f) for f in os.listdir(labeled_data_folder)
+                   if (not f.endswith('_cropped')) and (not f.endswith('_labeled')) and
+                   os.path.isdir(os.path.join(labeled_data_folder, f))]
+
+    machinelabels = []
+    for folder in rec_folders:
+        for file in os.listdir(folder):
+            if file.startswith('machinelabels-iter') and file.endswith('.h5'):
+                machinelabels.append(os.path.join(folder, file))
+
+    for h5 in tqdm(machinelabels):
+        df = pd.read_hdf(h5, key="df_with_missing")
+
+        avg_x = df.xs('x', level=3, axis=1).mean().mean()
+        avg_y = df.xs('y', level=3, axis=1).mean().mean()
+
+        for idx in df.index:
+            for col in df.columns:
+                if pd.isna(df.loc[idx, col]):
+                    if col[-1] == 'x':
+                        df.loc[idx, col] = avg_x
+                    elif col[-1] == 'y':
+                        df.loc[idx, col] = avg_y
+                    elif col[-1] == 'likelihood':
+                        df.loc[idx, col] = 0.005
+
+        df.to_hdf(h5, key="df_with_missing")
+
+    print('Completed imputing total of {} machine labels .h5 files'.format(len(machinelabels)))
 
 # if __name__ == "__main__":
 #     import sys

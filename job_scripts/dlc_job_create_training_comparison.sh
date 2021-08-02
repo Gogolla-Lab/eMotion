@@ -9,8 +9,8 @@
 #SBATCH -o dlc_job_create_training_comparison_%J.out
 
 module purge
-module load cuda/11.1.0
-module load cudnn/8.0.4.30-11.1-linux-x64
+#module load cuda/11.1.0
+#module load cudnn/8.0.4.30-11.1-linux-x64
 
 source "$HOME"/.bashrc
 source activate DLC-GPU
