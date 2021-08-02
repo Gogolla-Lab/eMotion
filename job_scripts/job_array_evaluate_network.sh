@@ -19,7 +19,7 @@ source activate DLC-GPU
 gputouse=$CUDA_VISIBLE_DEVICES
 config=${1?Error: no config.yaml given}
 
-python behaviour-switching/worker_scripts/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse" "$config"
+python eMotion/worker_scripts/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse" "$config"
 echo "job_array_evaluate_network.sh $SLURM_ARRAY_TASK_ID $gputouse $config completed!"
 
 #Manually edit:
