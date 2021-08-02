@@ -15,9 +15,8 @@ videos_path = "/usr/users/onur.serce/isopreteranol"
 
 videos_path_list = []
 for video in os.listdir(videos_path):
-    if video.endswith(".mp4") or video.endswith(".MP4"):
-        if 'labeled' not in video:
-            videos_path_list.append(os.path.join(videos_path, video))
+    if (video.endswith(".mp4") or video.endswith(".MP4")) and 'labeled' not in video:
+        videos_path_list.append(os.path.join(videos_path, video))
 
 # This is to resume the training from where it left off, don't forget to remove this!
 # videos_path_list = videos_path_list[10:]

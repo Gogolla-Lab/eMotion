@@ -1,13 +1,12 @@
 #!/bin/bash
-#SBATCH -a 0-9
+#SBATCH -a 1-6
 #SBATCH -p gpu
-#SBATCH -x dge007
 #SBATCH --qos=short
 #SBATCH -t 1:30:00
 #SBATCH -G gtx1080:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=serce@neuro.mpg.de
-#SBATCH -o evaluate_network_%A_%a.out
+#SBATCH -o job_array_evaluate_network_%A_%a.out
 
 module purge
 module load cuda/11.1.0
@@ -17,9 +16,10 @@ source "$HOME"/.bashrc
 source activate DLC-GPU
 
 gputouse=$CUDA_VISIBLE_DEVICES
+config=${1?Error: no config.yaml given}
 
-python behaviour-switching/worker_scripts/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse"
-echo "dlc_evaluate_network.py $SLURM_ARRAY_TASK_ID $gputouse completed!"
+python behaviour-switching/worker_scripts/dlc_evaluate_network.py "$SLURM_ARRAY_TASK_ID" "$gputouse" "$config"
+echo "job_array_evaluate_network.sh $SLURM_ARRAY_TASK_ID $gputouse $config completed!"
 
 #Manually edit:
 #iteration and shuffleindex in config.yaml file
